@@ -23,6 +23,8 @@ public class Cours implements Serializable {
 	private String intitule;
 	@ManyToMany(mappedBy="cours")
 	private Set<Session> sessions;
+	private int prix;
+
 	public Long getId() {
 		return id;
 	}
@@ -55,10 +57,19 @@ public class Cours implements Serializable {
 	public void setSessions(Set<Session> sessions) {
 		this.sessions = sessions;
 	}
+
+	public int getPrix() {
+		return prix;
+	}
+
+	public void setPrix(int prix) {
+		this.prix = prix;
+	}
+
 	@Override
 	public String toString() {
 		return "Cours [id=" + id + ", description=" + description + ", typeCours=" + typeCours + ", intitule="
-				+ intitule + "]";
+				+ intitule + ", description=" +prix + "]";
 	}
 	public Cours(Long id, String description, TypeCours typeCours, String intitule) {
 		super();
@@ -67,6 +78,14 @@ public class Cours implements Serializable {
 		this.typeCours = typeCours;
 		this.intitule = intitule;
 	}
+
+	public Cours(String description, TypeCours typeCours, String intitule, int prix) {
+		this.description = description;
+		this.typeCours = typeCours;
+		this.intitule = intitule;
+		this.prix = prix;
+	}
+
 	public Cours() {
 		super();
 		// TODO Auto-generated constructor stub

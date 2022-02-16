@@ -10,8 +10,10 @@ public interface ICoursService {
 	Long modifierCours(Cours cours);
 
 	void supprimerCours(Long coursId);
-	
+
 	List<Cours> getCours();
-	
+
 	void affecterCoursASession(Long coursId, Long sessionId);
+
+	List<Cours> listCours();
 }
