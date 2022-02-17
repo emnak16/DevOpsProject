@@ -7,14 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -32,7 +25,7 @@ public class Session implements Serializable{
 	private String description;
 	@ManyToOne
     Formateur formateur;
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	Set<Cours> cours;
 	private Long price;
 
@@ -92,7 +85,33 @@ public class Session implements Serializable{
 		this.description = description;
 	}
 
-	public Session( Date dateDebut, Date dateFin, Long duree, String description) {
+	public Session(Date dateDebut, Date dateFin, Long duree, String description, Formateur formateur, Set<Cours> cours, Long price) {
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.duree = duree;
+		this.description = description;
+		this.formateur = formateur;
+		this.cours = cours;
+		this.price = price;
+	}
+	public Session(Date dateDebut, Date dateFin, Long duree, String description, Set<Cours> cours, Long price) {
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.duree = duree;
+		this.description = description;
+		this.cours = cours;
+		this.price = price;
+	}
+
+	public Session(Date dateDebut, Date dateFin, Long duree, String description, Set<Cours> cours) {
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.duree = duree;
+		this.description = description;
+		this.cours = cours;
+	}
+
+	public Session(Date dateDebut, Date dateFin, Long duree, String description) {
 		super();
 
 		this.dateDebut = dateDebut;

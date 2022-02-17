@@ -1,17 +1,16 @@
 package com.esprit.examen.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 public class Formateur implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -26,9 +25,11 @@ public class Formateur implements Serializable{
 	private String email;
 	private String password;
 	private Boolean admin;
-	@OneToMany(mappedBy="formateur")
+	@OneToMany(mappedBy="formateur",fetch = FetchType.EAGER)
 	private Set<Session> sessions;
-	
+
+	private Long salary;
+
 	public Long getId() {
 		return id;
 	}
@@ -106,6 +107,27 @@ public class Formateur implements Serializable{
 		this.email = email;
 		this.password = password;
 	}
+	public Formateur( String nom, String prenom, Poste poste, Contrat contrat, String email, String password) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		this.poste = poste;
+		this.contrat = contrat;
+		this.email = email;
+		this.password = password;
+	}
+
+	public Formateur( String nom, String prenom, Poste poste, Contrat contrat, String email, String password, Long salary) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		this.poste = poste;
+		this.contrat = contrat;
+		this.email = email;
+		this.password = password;
+		this.salary = salary;
+	}
+
 	public Formateur() {
 		super();
 		// TODO Auto-generated constructor stub

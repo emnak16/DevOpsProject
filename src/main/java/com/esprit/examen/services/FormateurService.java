@@ -2,6 +2,7 @@ package com.esprit.examen.services;
 
 import java.util.List;
 
+import com.esprit.examen.entities.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +47,10 @@ public class FormateurService implements IFormateurService{
 		return formateurRepository.findAll();
 	}
 
-
+	@Override
+	public Formateur findByIdFormateur(Long formateurId) {
+		return formateurRepository.findById(formateurId).get();
+	}
 	
 	
 

@@ -16,5 +16,11 @@ public interface ISessionService {
 
 	List<Session> listSession();
 
+	Session findByIdSession(Long sessionId);
+
+	Session findSessionByFormateur(Long formateurId);
+
+	void budgerSession(Long sessionId, Long salary);
+
 
 }

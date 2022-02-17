@@ -1,6 +1,8 @@
 package com.esprit.examen;
 
-import com.esprit.examen.entities.Session;
+import com.esprit.examen.entities.*;
+import com.esprit.examen.services.ICoursService;
+import com.esprit.examen.services.IFormateurService;
 import com.esprit.examen.services.ISessionService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,8 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -21,6 +22,10 @@ public class SessionTest {
 
     @Autowired
     ISessionService sessionService;
+    @Autowired
+    IFormateurService formateurService;
+    @Autowired
+    ICoursService coursService;
 
     @Test
     public void ajouterSessionTest(){
@@ -82,6 +87,48 @@ public class SessionTest {
         sessionService.supprimerSession(s.getId());
 
     }
+    @Test
+    public void affecterFormateurASessionTest(){
+        Date date1 = null;
+        Date date3=new Date();
+        java.sql.Date date2;
+        date2 = new java.sql.Date(date3.getTime());
+        date1 = new java.sql.Date(date3.getTime());
+        Session s = new Session(date1, date2, 1L, "First session, month long");
+        sessionService.addSession(s);
+        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "wbesbes@vermeg.com", "Vermeg+123");
+        formateurService.addFormateur(f);
+        Session s1 = sessionService.findByIdSession(s.getId());
+        Formateur f1 = formateurService.findByIdFormateur(f.getId());
+        sessionService.affecterFormateurASession(s1.getId(), f1.getId());
+        Session s2 = sessionService.findSessionByFormateur(f.getId());
+        assertNotNull(s2);
+        sessionService.supprimerSession(s1.getId());
+        formateurService.supprimerFormateur(f1.getId());
+    }
 
+    @Test
+    public void budgerSessionTest(){
+        Date date1 = null;
+        Date date3=new Date();
+        java.sql.Date date2;
+        date2 = new java.sql.Date(date3.getTime());
+        date1 = new java.sql.Date(date3.getTime());
+        Set<Session> setS = new HashSet<Session>();
+        Set<Cours> setC = new HashSet<Cours>();
+        Cours c = new Cours("first course", TypeCours.Informatique, "cours", setS, 10L);
+        coursService.addCours(c);
+        setC.add(c);
+        Session s = new Session(date1, date2, 3L, "First session, month long",setC);
+        sessionService.addSession(s);
+        setS.add(s);
+        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "wbesbes@vermeg.com", "Vermeg+123",500L);
+        formateurService.addFormateur(f);
 
+        sessionService.budgerSession(s.getId(), f.getSalary());
+
+        if(s.getPrice()!=null){
+        assertEquals(s.getPrice(), Optional.of((530L)));
+        }
+    }
 }
