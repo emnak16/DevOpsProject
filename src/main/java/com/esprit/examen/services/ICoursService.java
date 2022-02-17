@@ -3,6 +3,7 @@ package com.esprit.examen.services;
 import java.util.List;
 
 import com.esprit.examen.entities.Cours;
+import com.esprit.examen.entities.Formateur;
 
 public interface ICoursService {
 	Long addCours(Cours cours);
@@ -13,7 +14,10 @@ public interface ICoursService {
 
 	List<Cours> getCours();
 
+	Cours findcoursById(Long coursId);
+
 	void affecterCoursASession(Long coursId, Long sessionId);
 
-	List<Cours> listCours();
+	
+
 }

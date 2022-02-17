@@ -30,7 +30,7 @@ public Cours ajouterCours(@RequestBody Cours cours) {
 @PutMapping("/modifierCours")
 @ResponseBody
 public Cours modifierCours(@RequestBody Cours cours) {
-	coursService.addCours(cours);
+	coursService.modifierCours(cours);
 	return cours;
 }
 
@@ -46,6 +46,14 @@ public List<Cours> listeCours() {
 	
 	return  coursService.getCours();
 }
+
+	@GetMapping("/getCoursById/{coursId}")
+	@ResponseBody
+	public Cours getCoursByID(@PathVariable("coursId") Long coursId) {
+
+		return  coursService.findcoursById(coursId);
+	}
+
 
 @PutMapping("/affecterCoursASession/{coursId}/{sessionId}")
 @ResponseBody
