@@ -4,6 +4,7 @@ import com.esprit.examen.entities.*;
 import com.esprit.examen.services.ICoursService;
 import com.esprit.examen.services.IFormateurService;
 import com.esprit.examen.services.ISessionService;
+import lombok.extern.java.Log;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Log
 public class SessionTest {
 
     @Autowired
@@ -105,6 +107,7 @@ public class SessionTest {
         assertNotNull(s2);
         sessionService.supprimerSession(s1.getId());
         formateurService.supprimerFormateur(f1.getId());
+        log.info(""+s.getId());
     }
 
     @Test

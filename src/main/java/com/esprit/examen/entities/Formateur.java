@@ -6,13 +6,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
  @Getter
@@ -32,7 +26,7 @@ public class Formateur implements Serializable {
     private String email;
     private String password;
     private Boolean admin;
-    @OneToMany(mappedBy = "formateur")
+    @OneToMany(mappedBy = "formateur",fetch = FetchType.EAGER)
     private Set<Session> sessions;
 
 
