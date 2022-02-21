@@ -1,9 +1,10 @@
 package com.esprit.examen.services;
 
-import com.esprit.examen.entities.Contrat;
+
 import com.esprit.examen.entities.Formateur;
-import com.esprit.examen.entities.TypeCours;
+
 import com.esprit.examen.repositories.FormateurRepository;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import com.esprit.examen.repositories.SessionRepository;
 import java.util.List;
 
 @Service
+@Log
 public class SessionService implements ISessionService{
 
 	@Autowired
@@ -24,6 +26,7 @@ public class SessionService implements ISessionService{
 	@Override
 	public Long addSession(Session session) {
 		sessionRepository.save(session);
+		log.info("la session à été ajouté avec succes");
 		return session.getId();
 	}
 
@@ -31,23 +34,26 @@ public class SessionService implements ISessionService{
 	@Override
 	public Long modifierSession(Session session) {
 		sessionRepository.save(session);
+		log.info("la session à été modifié avec succes");
 		return session.getId();
 	}
 
 	@Override
 	public void supprimerSession(Long sessionId) {
 		sessionRepository.deleteById(sessionId);
+		log.info("la session à été supprimé avec succes");
 	}
 
 	@Override
 	public void affecterFormateurASession(Long formateurId, Long sessionId) {
-			/*todo*/
+
 		Session s = sessionRepository.findById(sessionId).get();
 		Formateur f = formateurRepository.findById(formateurId).get();
 		s.setFormateur(f);
 		f.getSessions().add(s);
 		modifierSession(s);
-		formateurService.modifierFormateur(f);
+		formateurService.addorEditFormateur(f);
+		log.info("formateur affecté à la session avec succes");
 	}
 
 

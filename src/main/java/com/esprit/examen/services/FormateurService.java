@@ -16,16 +16,16 @@ public class FormateurService implements IFormateurService{
 	@Autowired
 	FormateurRepository formateurRepository;
 	@Override
-	public Long addFormateur(Formateur formateur) {
+	public Long addorEditFormateur(Formateur formateur) {
 		formateurRepository.save(formateur);
 		return formateur.getId();
 	}
 
-	@Override
+/*	@Override
 	public Long modifierFormateur(Formateur formateur) {
 		formateurRepository.save(formateur);
 		return formateur.getId();
-	}
+	}*/
 
 	@Override
 	public void supprimerFormateur(Long formateurId) {

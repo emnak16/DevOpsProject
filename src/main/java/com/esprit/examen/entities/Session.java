@@ -2,6 +2,7 @@ package com.esprit.examen.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.java.Log;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,6 +29,8 @@ public class Session implements Serializable{
 	@ManyToMany(fetch = FetchType.EAGER)
 	Set<Cours> cours;
 	private Long price;
+
+	private Long salaireF;
 
 	public Long getId() {
 		return id;
@@ -85,6 +88,17 @@ public class Session implements Serializable{
 		this.description = description;
 	}
 
+	public Session(Date dateDebut, Date dateFin, Long duree, String description, Set<Cours> cours,Formateur formateur) {
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.duree = duree;
+		this.description = description;
+		this.formateur = formateur;
+		this.cours = cours;
+	}
+
+
+
 	public Session(Date dateDebut, Date dateFin, Long duree, String description, Formateur formateur, Set<Cours> cours, Long price) {
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
@@ -102,6 +116,7 @@ public class Session implements Serializable{
 		this.cours = cours;
 		this.price = price;
 	}
+
 
 	public Session(Date dateDebut, Date dateFin, Long duree, String description, Set<Cours> cours) {
 		this.dateDebut = dateDebut;

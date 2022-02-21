@@ -97,7 +97,7 @@ public class SessionTest {
         Session s = new Session(date1, date2, 1L, "First session, month long");
         sessionService.addSession(s);
         Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "wbesbes@vermeg.com", "Vermeg+123");
-        formateurService.addFormateur(f);
+        formateurService.addorEditFormateur(f);
         Session s1 = sessionService.findByIdSession(s.getId());
         Formateur f1 = formateurService.findByIdFormateur(f.getId());
         sessionService.affecterFormateurASession(s1.getId(), f1.getId());
@@ -121,14 +121,16 @@ public class SessionTest {
         setC.add(c);
         Session s = new Session(date1, date2, 3L, "First session, month long",setC);
         sessionService.addSession(s);
+        s.setSalaireF(500L);
+        sessionService.modifierSession(s);
         setS.add(s);
-        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "wbesbes@vermeg.com", "Vermeg+123",500L);
-        formateurService.addFormateur(f);
 
-        sessionService.budgerSession(s.getId(), f.getSalary());
+        sessionService.budgerSession(s.getId(), s.getSalaireF());
 
         if(s.getPrice()!=null){
         assertEquals(s.getPrice(), Optional.of((530L)));
+            sessionService.supprimerSession(s.getId());
+            coursService.supprimerCours(c.getId());
         }
     }
 }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.extern.java.Log;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -52,7 +53,6 @@ public class Cours implements Serializable {
 	}
 
 
-	
 	public Set<Session> getSessions() {
 		return sessions;
 	}

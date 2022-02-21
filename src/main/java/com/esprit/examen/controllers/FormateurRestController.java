@@ -23,14 +23,14 @@ public class FormateurRestController {
 	@PostMapping("/ajouterFormateur")
 	@ResponseBody
 	public Formateur ajouterFormateur(@RequestBody Formateur formateur) {
-		formateurService.addFormateur(formateur);
+		formateurService.addorEditFormateur(formateur);
 		return formateur;
 	}
 
 	@PutMapping("/modifierFormateur")
 	@ResponseBody
 	public Formateur modifierFormateur(@RequestBody Formateur formateur) {
-		formateurService.addFormateur(formateur);
+		formateurService.addorEditFormateur(formateur);
 		return formateur;
 	}
 
