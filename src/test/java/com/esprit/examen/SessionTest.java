@@ -39,6 +39,10 @@ public class SessionTest {
         date1 = new java.sql.Date(date3.getTime());
         Session s = new Session(date1, date2, 1L, "First session, month long");
         sessionService.addSession(s);
+        Session s1 = new Session(-1000L, date1, date2, 1L, "First session, month long");
+        sessionService.addSession(s1);
+        Session s2 = sessionService.listSession().stream().filter(session -> session.getId() == -1000).findFirst().get();
+
         boolean added = sessionService.listSession().stream().anyMatch(session -> session.toString().equals(s.toString()));
         assertTrue(added);
     }
@@ -96,18 +100,17 @@ public class SessionTest {
         java.sql.Date date2;
         date2 = new java.sql.Date(date3.getTime());
         date1 = new java.sql.Date(date3.getTime());
-        Session s = new Session(date1, date2, 1L, "First session, month long");
+        Session s = new Session(-1000L, date1, date2, 1L, "First session, month long");
         sessionService.addSession(s);
-        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "wbesbes@vermeg.com", "Vermeg+123");
+        Formateur f = new Formateur(-1000L, "walid", "besbes", Poste.Ingénieur, Contrat.CDI, "97189195", "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
-        Session s1 = sessionService.findByIdSession(s.getId());
-        Formateur f1 = formateurService.findByIdFormateur(f.getId());
+        Session s1 = sessionService.listSession().stream().filter(session -> session.getId() == -1000).findFirst().get();
+        Formateur f1 = formateurService.listFormateurs().stream().filter(formateur -> formateur.getId() == -1000).findFirst().get();
         sessionService.affecterFormateurASession(s1.getId(), f1.getId());
         Session s2 = sessionService.findSessionByFormateur(f.getId());
         assertNotNull(s2);
         sessionService.supprimerSession(s1.getId());
         formateurService.supprimerFormateur(f1.getId());
-        log.info(""+s.getId());
     }
 
     @Test

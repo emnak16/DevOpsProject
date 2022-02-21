@@ -3,10 +3,10 @@ package com.esprit.examen.entities;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-import java.util.Set;
-
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
  @Getter
@@ -27,16 +27,16 @@ public class Formateur implements Serializable {
     private String password;
     private Boolean admin;
     @OneToMany(mappedBy = "formateur",fetch = FetchType.EAGER)
-    private Set<Session> sessions;
+    private Set<Session> sessions = new HashSet<>();
 
 
-
-       public Formateur(Long id, String nom, String prenom, Poste poste,  Contrat contrat, String email, String password) {
+    public Formateur(Long id, String nom, String prenom, Poste poste, Contrat contrat, String phone, String email, String password) {
         super();
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.poste = poste;
+        this.phone = phone;
         this.contrat = contrat;
         this.email = email;
         this.password = password;
@@ -62,7 +62,6 @@ public class Formateur implements Serializable {
                 ", poste=" + poste +
                 ", contrat=" + contrat +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", admin=" + admin +
                 '}';
     }
@@ -81,7 +80,6 @@ public class Formateur implements Serializable {
 
     public Formateur() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 
