@@ -2,7 +2,7 @@ package com.esprit.examen.entities;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.java.Log;
+
 
 import java.io.Serializable;
 import java.util.Date;

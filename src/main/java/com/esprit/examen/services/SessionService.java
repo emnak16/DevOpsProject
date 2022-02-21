@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.esprit.examen.entities.Session;
 import com.esprit.examen.repositories.SessionRepository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Log
@@ -45,14 +48,24 @@ public class SessionService implements ISessionService{
 	}
 
 	@Override
+	@Transactional
 	public void affecterFormateurASession(Long formateurId, Long sessionId) {
 
-		Session s = sessionRepository.findById(sessionId).get();
-		Formateur f = formateurRepository.findById(formateurId).get();
-		s.setFormateur(f);
+		Session s = sessionRepository.findById(sessionId)
+				.orElse(new Session());
+		Formateur f = formateurRepository.findById(formateurId).orElse(new Formateur());
+
+		if(f.getSessions() == null){
+			Set sessions = new HashSet<Session>();
+			sessions.add(s);
+			f.setSessions(sessions);
+		}else{
 		f.getSessions().add(s);
-		modifierSession(s);
+		}
 		formateurService.addorEditFormateur(f);
+		s.setFormateur(f);
+		modifierSession(s);
+
 		log.info("formateur affecté à la session avec succes");
 	}
 
@@ -70,7 +83,9 @@ public class SessionService implements ISessionService{
 
 	@Override
 	public Session findSessionByFormateur(Long formateurId) {
-		return listSession().stream().filter(session -> session.getFormateur().getId()==formateurId).findFirst().get();
+		return listSession().stream().filter(session -> session.getFormateur().getId()==formateurId)
+				.findFirst()
+				.orElseGet(Session::new);
 	}
 
 	@Override

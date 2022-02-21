@@ -98,13 +98,12 @@ public class SessionTest {
         sessionService.addSession(s);
         Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
-        Session s1 = sessionService.findByIdSession(s.getId());
-        Formateur f1 = formateurService.findByIdFormateur(f.getId());
-        sessionService.affecterFormateurASession(s1.getId(), f1.getId());
+        System.out.println(s.getId());
+        sessionService.affecterFormateurASession(s.getId(), f.getId());
         Session s2 = sessionService.findSessionByFormateur(f.getId());
         assertNotNull(s2);
-        sessionService.supprimerSession(s1.getId());
-        formateurService.supprimerFormateur(f1.getId());
+        sessionService.supprimerSession(s.getId());
+        formateurService.supprimerFormateur(f.getId());
     }
 
     @Test
