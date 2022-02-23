@@ -68,7 +68,7 @@ public class FormateurServiceTest {
         Cours c = new Cours("first course", TypeCours.Informatique, "cours", setS, 10L);
         coursService.addCours(c);
         setC.add(c);
-        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "wbesbes@vermeg.com", "Vermeg+123");
+        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Khouloud@123");
         formateurService.addorEditFormateur(f);
         Session s = new Session(date1, date2, 1L, "First session, month long", setC, f);
         sessionService.addSession(s);

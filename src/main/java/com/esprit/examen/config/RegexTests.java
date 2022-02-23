@@ -18,7 +18,7 @@ public class RegexTests {
     }
 
     public static Boolean isValidMail(String mail) {
-        return (mail.length() != 0 && Pattern.matches(MAIL_PATTERN, mail));
+        return Pattern.matches(MAIL_PATTERN, mail);
     }
 
 

@@ -28,16 +28,16 @@ public class FormateurService implements IFormateurService {
     public Long addorEditFormateur(Formateur formateur) {
 
 
-        if (Boolean.FALSE.equals(RegexTests.isValidMail(formateur.getEmail()))) {
+        if (formateur.getEmail() != null && Boolean.FALSE.equals(RegexTests.isValidMail(formateur.getEmail()))) {
             log.severe("email wrong format");
             return -1l;
-        } else if (Boolean.FALSE.equals(RegexTests.isValidName(formateur.getNom()))) {
+        } else if (formateur.getEmail() == null || Boolean.FALSE.equals(RegexTests.isValidName(formateur.getNom()))) {
             log.severe("Name wrong format");
             return -1l;
-        } else if (Boolean.FALSE.equals(RegexTests.isValidPassword(formateur.getPassword()))) {
+        } else if (formateur.getPassword() == null || Boolean.FALSE.equals(RegexTests.isValidPassword(formateur.getPassword()))) {
             log.severe("Password wrong format");
             return -1l;
-        } else if (Boolean.FALSE.equals(RegexTests.isAvalidPhone(formateur.getPhone()))) {
+        } else if (formateur.getPhone() != null && Boolean.FALSE.equals(RegexTests.isAvalidPhone(formateur.getPhone()))) {
             log.severe("Phone number  wrong format");
             return -1l;
         } else {

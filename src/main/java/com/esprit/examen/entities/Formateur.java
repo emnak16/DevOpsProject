@@ -26,7 +26,7 @@ public class Formateur implements Serializable {
     private String email;
     private String password;
     private Boolean admin;
-    @OneToMany(mappedBy = "formateur", fetch = FetchType.EAGER,cascade=CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "formateur", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Session> sessions;
 
 
