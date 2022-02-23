@@ -83,7 +83,7 @@ public class SessionService implements ISessionService{
 
 	@Override
 	public Session findSessionByFormateur(Long formateurId) {
-		return listSession().stream().filter(session -> session.getFormateur().getId()==formateurId)
+		return listSession().stream().filter(session -> session.getFormateur().getId().equals(formateurId))
 				.findFirst()
 				.orElseGet(Session::new);
 	}

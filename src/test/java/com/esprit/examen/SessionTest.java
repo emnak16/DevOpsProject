@@ -94,11 +94,11 @@ public class SessionTest {
         java.sql.Date date2;
         date2 = new java.sql.Date(date3.getTime());
         date1 = new java.sql.Date(date3.getTime());
-        Session s = new Session(date1, date2, 1L, "First session, month long");
-        sessionService.addSession(s);
         Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
-        System.out.println(s.getId());
+        Session s = new Session(date1, date2, 1L, "First session, month long",f);
+        sessionService.addSession(s);
+
         sessionService.affecterFormateurASession(s.getId(), f.getId());
         Session s2 = sessionService.findSessionByFormateur(f.getId());
         assertNotNull(s2);
