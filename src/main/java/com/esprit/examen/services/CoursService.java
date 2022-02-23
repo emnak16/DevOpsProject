@@ -1,9 +1,7 @@
 package com.esprit.examen.services;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 import com.esprit.examen.entities.Session;
 import com.esprit.examen.repositories.SessionRepository;
@@ -29,6 +28,10 @@ public class CoursService implements ICoursService {
 
 	@Autowired
 	CoursRepository coursRepository;
+
+	@Autowired
+	ISessionService sessionService;
+
 	@Autowired
 	SessionRepository sessionRepository;
 
@@ -76,12 +79,12 @@ public class CoursService implements ICoursService {
 	@Override
 	public void affecterCoursASession(Long coursId, Long sessionId)
 	{   Cours c = coursRepository.findById(coursId).get();
-		Session s = sessionRepository.findById(sessionId).get();
+		Session s = sessionService.findByIdSession(sessionId);
 		Set<Session> set = new HashSet<>();
 		set.add(s);
 		c.setSessions(set);
-		log.info("added sessions"+ c.toString());
 		coursRepository.save(c);
+		log.info("added sessions"+ c.toString());
 
 
 
@@ -109,6 +112,14 @@ public class CoursService implements ICoursService {
 		document.close();
 	}
 
+
+	public List<Session> retrieveHistory(Long coursId)
+
+	{
+		List<Session> l= new ArrayList<>();
+		return l;
+
+	}
 
 
 }

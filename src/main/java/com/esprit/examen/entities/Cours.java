@@ -1,17 +1,19 @@
 package com.esprit.examen.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.extern.java.Log;
+
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 public class Cours implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -21,9 +23,13 @@ public class Cours implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private TypeCours typeCours;
 	private String intitule;
-	@ManyToMany(mappedBy="cours")
+	@ManyToMany(mappedBy="cours",fetch = FetchType.EAGER)
 	private Set<Session> sessions;
+
 	private int prix;
+
+
+
 
 	public Long getId() {
 		return id;
@@ -49,8 +55,8 @@ public class Cours implements Serializable {
 	public void setIntitule(String intitule) {
 		this.intitule = intitule;
 	}
-	
-	
+
+
 	public Set<Session> getSessions() {
 		return sessions;
 	}
@@ -71,18 +77,23 @@ public class Cours implements Serializable {
 		return "Cours [id=" + id + ", description=" + description + ", typeCours=" + typeCours + ", intitule="
 				+ intitule + ", description=" +prix + "]";
 	}
-	public Cours(Long id, String description, TypeCours typeCours, String intitule) {
-		super();
-		this.id = id;
+
+
+
+	public Cours(String description, TypeCours typeCours, String intitule, Set<Session> sessions, int prix) {
 		this.description = description;
 		this.typeCours = typeCours;
 		this.intitule = intitule;
+		this.sessions = sessions;
+		this.prix = prix;
 	}
+
 
 	public Cours(String description, TypeCours typeCours, String intitule, int prix) {
 		this.description = description;
 		this.typeCours = typeCours;
 		this.intitule = intitule;
+		this.sessions = sessions;
 		this.prix = prix;
 	}
 

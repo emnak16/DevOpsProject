@@ -1,23 +1,32 @@
 package com.esprit.examen.config;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.java.Log;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
+@Log
 public class LoggingAspect {
 	
-	private static final Logger l = LogManager.getLogger(LoggingAspect.class);
 
 	
 	@After("execution(* com.esprit.examen.services.*.*(..))")
 	public void logMethodExit(JoinPoint joinPoint) {
 		String name = joinPoint.getSignature().getName();
-		l.info("méthode : " + name +" exécutée avec succès");
-	}
+        log.info("method : " + name + " successfully executed");
+    }
 
+    @Around("execution(* com.esprit.examen.services.*.*(..))")
+    public Object profile(ProceedingJoinPoint pjp) throws Throwable {
+        long start = System.currentTimeMillis();
+        Object obj = pjp.proceed();
+        long elapsedTime = System.currentTimeMillis() - start;
+        log.info("Method execution time: " + elapsedTime + " milliseconds.");
+        return obj;
+    }
 }

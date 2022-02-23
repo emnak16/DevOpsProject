@@ -1,17 +1,23 @@
 package com.esprit.examen.services;
 
-import java.util.List;
 import com.esprit.examen.entities.Formateur;
 import com.esprit.examen.entities.TypeCours;
 
-public interface IFormateurService {
-	Long addFormateur(Formateur formateur);
+import java.util.List;
 
-	Long modifierFormateur(Formateur formateur);
+public interface IFormateurService {
+	Long addorEditFormateur(Formateur formateur);
+
 
 	void supprimerFormateur(Long formateurId);
-	
+
 	Long nombreFormateursImpliquesDansUnCours(TypeCours typeCours);
-		
+
+	Formateur findFormateurById(Long formateurId);
+
 	List<Formateur> listFormateurs();
+
+	List<Formateur> findFormateurByName(String name);
+
+	List<Formateur> findFormateurByLastName(String prenom);
 }
