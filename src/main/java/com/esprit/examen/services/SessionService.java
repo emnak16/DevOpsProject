@@ -51,9 +51,13 @@ public class SessionService implements ISessionService{
 	@Transactional
 	public void affecterFormateurASession(Long formateurId, Long sessionId) {
 
+		log.info("idFormateur" + formateurId);
+		log.info("idSessin" + sessionId);
+
 		Session s = sessionRepository.findById(sessionId)
 				.orElse(new Session());
 		Formateur f = formateurRepository.findById(formateurId).orElse(new Formateur());
+		log.info("formateur" + f.toString());
 
 		if (f.getSessions() == null) {
 			Set sessions = new HashSet<Session>();
