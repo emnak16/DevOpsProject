@@ -26,7 +26,7 @@ public class Cours implements Serializable {
 	@ManyToMany(mappedBy="cours",fetch = FetchType.EAGER)
 	private Set<Session> sessions;
 
-	private int prix;
+	private double prix;
 
 
 
@@ -64,11 +64,11 @@ public class Cours implements Serializable {
 		this.sessions = sessions;
 	}
 
-	public int getPrix() {
+	public double getPrix() {
 		return prix;
 	}
 
-	public void setPrix(int prix) {
+	public void setPrix(double prix) {
 		this.prix = prix;
 	}
 
@@ -80,7 +80,7 @@ public class Cours implements Serializable {
 
 
 
-	public Cours(String description, TypeCours typeCours, String intitule, Set<Session> sessions, int prix) {
+	public Cours(String description, TypeCours typeCours, String intitule, Set<Session> sessions, double prix) {
 		this.description = description;
 		this.typeCours = typeCours;
 		this.intitule = intitule;
@@ -89,7 +89,7 @@ public class Cours implements Serializable {
 	}
 
 
-	public Cours(String description, TypeCours typeCours, String intitule, int prix) {
+	public Cours(String description, TypeCours typeCours, String intitule, double prix) {
 		this.description = description;
 		this.typeCours = typeCours;
 		this.intitule = intitule;
