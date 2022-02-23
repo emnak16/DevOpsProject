@@ -26,7 +26,6 @@ public class FormateurService implements IFormateurService {
 
     @Override
     public Long addorEditFormateur(Formateur formateur) {
-
         if (formateur.getEmail() != null && Boolean.FALSE.equals(RegexTests.isValidMail(formateur.getEmail()))) {
             log.severe("email wrong format");
             return -1l;

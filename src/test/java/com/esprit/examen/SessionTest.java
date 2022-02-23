@@ -98,9 +98,10 @@ public class SessionTest {
         date1 = new java.sql.Date(date3.getTime());
         Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
-        Session s = new Session(date1, date2, 1L, "First session, month long", f);
+        Session s = new Session(date1, date2, 1L, "First session, month long",f);
         sessionService.addSession(s);
-        sessionService.affecterFormateurASession(f.getId(), s.getId());
+
+        sessionService.affecterFormateurASession( f.getId() , s.getId());
         Session s2 = sessionService.findSessionByFormateur(f.getId());
         assertNotNull(s2);
         sessionService.supprimerSession(s.getId());
@@ -116,7 +117,7 @@ public class SessionTest {
         date1 = new java.sql.Date(date3.getTime());
         Set<Session> setS = new HashSet<Session>();
         Set<Cours> setC = new HashSet<Cours>();
-        Cours c = new Cours("first course", TypeCours.Informatique, "cours", setS, 10L);
+        Cours c = new Cours("first course", TypeCours.Informatique, "cours", setS, 10);
         coursService.addCours(c);
         setC.add(c);
         Session s = new Session(date1, date2, 3L, "First session, month long",setC);
@@ -124,11 +125,9 @@ public class SessionTest {
         s.setSalaireF(500L);
         sessionService.modifierSession(s);
         setS.add(s);
-
         sessionService.budgerSession(s.getId(), s.getSalaireF());
-
         if(s.getPrice()!=null){
-            assertEquals(s.getPrice(), Optional.of((530L)));
+            assertEquals(s.getPrice(), Optional.of((530)));
             sessionService.supprimerSession(s.getId());
             coursService.supprimerCours(c.getId());
         }

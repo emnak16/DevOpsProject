@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
- @Getter
+@Getter
 @Setter
 public class Formateur implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -26,7 +26,7 @@ public class Formateur implements Serializable {
     private String email;
     private String password;
     private Boolean admin;
-    @OneToMany(mappedBy = "formateur", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "formateur", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     private Set<Session> sessions;
 
 
