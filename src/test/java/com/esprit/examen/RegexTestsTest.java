@@ -38,7 +38,7 @@ public class RegexTestsTest {
 
     @Test
     public void isValidMailTest() {
-        assertTrue(RegexTests.isValidMail("wbesbes@vermeg.com")); //compliant
+        assertTrue(RegexTests.isValidMail("khouloud.bentaoues33@gmail.com")); //compliant
         assertFalse(RegexTests.isValidMail("hk.at"));
         assertFalse(RegexTests.isValidMail("123@"));
 
