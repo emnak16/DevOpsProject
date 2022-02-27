@@ -3,6 +3,7 @@ package com.esprit.examen.services;
 import java.io.IOException;
 import java.util.*;
 
+import com.esprit.examen.exception.NotFoundException;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
 import org.springframework.stereotype.Service;
@@ -69,8 +70,8 @@ public class CoursService implements ICoursService {
 	}
 
     @Override
-	public Cours findcoursById(Long coursId) throws Exception {
-		Cours c = coursRepository.findById(coursId).orElseThrow(Exception::new);
+	public Cours findcoursById(Long coursId) throws NotFoundException {
+		Cours c = coursRepository.findById(coursId).orElseThrow(NotFoundException::new);
 		log.info("extracted course with information: "+ c.toString());
 		return c;}
 
@@ -117,8 +118,8 @@ public class CoursService implements ICoursService {
 	}
 
 
-	public List<Session> retrieveHistory(Long coursId) throws Exception {
-		Cours c = coursRepository.findById(coursId).orElseThrow(Exception::new);
+	public List<Session> retrieveHistory(Long coursId) throws NotFoundException {
+		Cours c = coursRepository.findById(coursId).orElseThrow(NotFoundException::new);
 
 		return (List<Session>) c.getSessions();
 

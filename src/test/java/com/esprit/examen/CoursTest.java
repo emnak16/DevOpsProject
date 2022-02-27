@@ -80,7 +80,12 @@ public class CoursTest {
     public void findcoursByIdTest() {
         Cours c = new Cours("Dev Web- full-stack",TypeCours.Informatique,"dev web!!!", 20);
         CoursService.addCours(c);
-        boolean res= CoursService.findcoursById(c.getId()).toString().equals(c.toString());
+        boolean res= false;
+        try {
+            res = CoursService.findcoursById(c.getId()).toString().equals(c.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         assertTrue(res);
         CoursService.supprimerCours(c.getId());
 

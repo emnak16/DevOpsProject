@@ -60,7 +60,7 @@ public class SessionTest {
     }
 
     @Test
-    public void supprimerSessionTest() throws ParseException{
+    public void supprimerSessionTest() {
         Date date1 = null;
         Date date3=new Date();
         java.sql.Date date2;

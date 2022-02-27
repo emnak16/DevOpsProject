@@ -6,10 +6,9 @@ import com.esprit.examen.entities.TypeCours;
 import com.esprit.examen.repositories.FormateurRepository;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +20,7 @@ public class FormateurService implements IFormateurService {
 
     @Autowired
     FormateurRepository formateurRepository;
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
+   
     @Override
     public Long addorEditFormateur(Formateur formateur) {
         if (formateur.getEmail() != null && Boolean.FALSE.equals(RegexTests.isValidMail(formateur.getEmail()))) {
@@ -39,9 +36,7 @@ public class FormateurService implements IFormateurService {
         } else if (formateur.getPhone() != null && Boolean.FALSE.equals(RegexTests.isAvalidPhone(formateur.getPhone()))) {
             log.severe("Phone number  wrong format");
             return -1l;
-        } else {
-            formateur.setPassword(passwordEncoder.encode(formateur.getPassword()));
-            formateurRepository.save(formateur);
+        } else {formateurRepository.save(formateur);
             log.info("added Trainer with information " + formateur.toString());
             return 1l;
         }
@@ -95,8 +90,5 @@ public class FormateurService implements IFormateurService {
 
     }
 
-    @Bean
-    public BCryptPasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
+
 }
