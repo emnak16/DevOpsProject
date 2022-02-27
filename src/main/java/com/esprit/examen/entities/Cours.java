@@ -1,5 +1,6 @@
 package com.esprit.examen.entities;
 
+import com.esprit.examen.dto.CoursModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,8 @@ public class Cours implements Serializable {
 
 	private double prix;
 
-
+	public Cours(CoursModel coursModel) {
+	}
 
 
 	public Long getId() {

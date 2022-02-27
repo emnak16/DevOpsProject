@@ -8,7 +8,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
 import java.util.List;
 
 import com.esprit.examen.entities.Session;
@@ -16,11 +16,11 @@ import com.esprit.examen.repositories.SessionRepository;
 import lombok.extern.java.Log;
 import com.esprit.examen.entities.Cours;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 
 import com.esprit.examen.repositories.CoursRepository;
 
-import javax.servlet.http.HttpServletResponse;
+
 
 @Service
 @Log
@@ -69,8 +69,8 @@ public class CoursService implements ICoursService {
 	}
 
     @Override
-	public Cours findcoursById(Long coursId)
-	{Cours c = coursRepository.findById(coursId).get();
+	public Cours findcoursById(Long coursId) throws Exception {
+		Cours c = coursRepository.findById(coursId).orElseThrow(Exception::new);
 		log.info("extracted course with information: "+ c.toString());
 		return c;}
 
@@ -78,14 +78,18 @@ public class CoursService implements ICoursService {
 
 	@Override
 	public void affecterCoursASession(Long coursId, Long sessionId)
-	{   Cours c = coursRepository.findById(coursId).get();
-		Session s = sessionService.findByIdSession(sessionId);
-		Set<Session> set = new HashSet<>();
-		set.add(s);
-		c.setSessions(set);
-		coursRepository.save(c);
-		log.info("added sessions"+ c.toString());
-
+	{
+		try {
+			Cours c = coursRepository.findById(coursId).orElseThrow(Exception::new);
+			Session s = sessionService.findByIdSession(sessionId);
+			Set<Session> set = new HashSet<>();
+			set.add(s);
+			c.setSessions(set);
+			coursRepository.save(c);
+			log.info("added sessions" + c.toString());
+		}catch(Exception e){
+			e.getMessage();
+		}
 
 
 	}
@@ -99,13 +103,13 @@ public class CoursService implements ICoursService {
 		fontTitle.setSize(18);
 
 		Paragraph paragraph = new Paragraph("This is a title.", fontTitle);
-		paragraph.setAlignment(Paragraph.ALIGN_CENTER);
+
 
 		Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
 		fontParagraph.setSize(12);
 
 		Paragraph paragraph2 = new Paragraph("This is a paragraph.", fontParagraph);
-		paragraph2.setAlignment(Paragraph.ALIGN_LEFT);
+
 
 		document.add(paragraph);
 		document.add(paragraph2);
@@ -113,11 +117,10 @@ public class CoursService implements ICoursService {
 	}
 
 
-	public List<Session> retrieveHistory(Long coursId)
+	public List<Session> retrieveHistory(Long coursId) throws Exception {
+		Cours c = coursRepository.findById(coursId).orElseThrow(Exception::new);
 
-	{
-		List<Session> l= new ArrayList<>();
-		return l;
+		return (List<Session>) c.getSessions();
 
 	}
 

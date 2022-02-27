@@ -4,6 +4,7 @@ package com.esprit.examen.services;
 import com.esprit.examen.entities.Cours;
 import com.esprit.examen.entities.Formateur;
 
+import com.esprit.examen.exception.NotFoundException;
 import com.esprit.examen.repositories.FormateurRepository;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class SessionService implements ISessionService{
 		Formateur f = formateurRepository.findById(formateurId).orElse(new Formateur());
 
 		if(f.getSessions() == null){
-			Set sessions = new HashSet<Session>();
+			Set<Session> sessions = new HashSet<>();
 			sessions.add(s);
 			f.setSessions(sessions);
 		}else{
@@ -78,8 +79,8 @@ public class SessionService implements ISessionService{
 	}
 
 	@Override
-	public Session findByIdSession( Long sessionId) {
-		return sessionRepository.findById(sessionId).get();
+	public Session findByIdSession( Long sessionId) throws NotFoundException {
+		return sessionRepository.findById(sessionId).orElseThrow(NotFoundException::new);
 	}
 
 	@Override
@@ -91,18 +92,18 @@ public class SessionService implements ISessionService{
 
 	@Override
 	public void budgerSession(Long sessionId, Long salary) {
-		Session s = findByIdSession(sessionId);
-		Long nbCours = s.getCours().stream().count();
-		double unitPrice = s.getCours().stream().findFirst().get().getPrix();
-		s.setPrice((nbCours*unitPrice*s.getDuree())+salary);
+		try {
+			Session s = findByIdSession(sessionId);
+		double totalCoursPrice = s.getCours().stream().mapToDouble(Cours::getPrix).sum();
+		s.setPrice((totalCoursPrice*s.getDuree())+salary);
 		modifierSession(s);
+		}catch(Exception e){
+			log.severe(e.getMessage());
+			log.severe("couldnt find session with id : " + sessionId);
+
+		}
 	}
 
-	@Override
-	public List<Session> retreiveSessionsByCoursID(Cours cours)
-	{
-		return sessionRepository.retreiveSessionsByCoursID(cours);
-
-	}
+	
 
 }

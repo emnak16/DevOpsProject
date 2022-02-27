@@ -1,5 +1,6 @@
 package com.esprit.examen.entities;
 
+import com.esprit.examen.dto.SessionModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,6 +32,9 @@ public class Session implements Serializable{
 	private Double price;
 
 	private Long salaireF;
+
+	public Session(SessionModel sessionModel) {
+	}
 
 	public Long getId() {
 		return id;

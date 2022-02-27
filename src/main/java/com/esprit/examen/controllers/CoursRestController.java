@@ -2,8 +2,11 @@ package com.esprit.examen.controllers;
 
 import java.util.List;
 
+import com.esprit.examen.dto.CoursModel;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -31,14 +34,16 @@ ICoursService coursService;
 
 @PostMapping("/ajouterCours")
 @ResponseBody
-public Cours ajouterCours(@RequestBody Cours cours) {
+public Cours ajouterCours(@RequestBody CoursModel coursModel) {
+	Cours cours = new Cours(coursModel);
 	coursService.addCours(cours);
 	return cours;
 }
 
 @PutMapping("/modifierCours")
 @ResponseBody
-public Cours modifierCours(@RequestBody Cours cours) {
+public Cours modifierCours(@RequestBody CoursModel coursModel) {
+	Cours cours = new Cours(coursModel);
 	coursService.modifierCours(cours);
 	return cours;
 }
@@ -58,9 +63,14 @@ public List<Cours> listeCours() {
 
 	@GetMapping("/getCoursById/{coursId}")
 	@ResponseBody
-	public Cours getCoursByID(@PathVariable("coursId") Long coursId) {
+	public  ResponseEntity<Cours> getCoursByID(@PathVariable("coursId") Long coursId) {
 
-		return  coursService.findcoursById(coursId);
+		try {
+			Cours cours =  coursService.findcoursById(coursId);
+			return new ResponseEntity<>(cours, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 

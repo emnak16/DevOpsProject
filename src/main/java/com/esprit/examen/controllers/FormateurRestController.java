@@ -1,5 +1,6 @@
 package com.esprit.examen.controllers;
 
+import com.esprit.examen.dto.FormateurModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,14 +23,16 @@ public class FormateurRestController {
 	
 	@PostMapping("/ajouterFormateur")
 	@ResponseBody
-	public Formateur ajouterFormateur(@RequestBody Formateur formateur) {
+	public Formateur ajouterFormateur(@RequestBody FormateurModel formateurModel) {
+		Formateur formateur = new Formateur(formateurModel);
 		formateurService.addorEditFormateur(formateur);
 		return formateur;
 	}
 
 	@PutMapping("/modifierFormateur")
 	@ResponseBody
-	public Formateur modifierFormateur(@RequestBody Formateur formateur) {
+	public Formateur modifierFormateur(@RequestBody FormateurModel formateurModel) {
+		Formateur formateur = new Formateur(formateurModel);
 		formateurService.addorEditFormateur(formateur);
 		return formateur;
 	}
@@ -43,7 +46,7 @@ public class FormateurRestController {
 	@GetMapping("/nombreFormateursImpliquesDansUnCours/{typeCours}")
 	@ResponseBody
 	public Long nombreFormateursImpliquesDansUnCours(@PathVariable("typeCours") TypeCours typeCours) {
-		Long nombreFormateurs=formateurService.nombreFormateursImpliquesDansUnCours(typeCours);
-		return nombreFormateurs;
+		return formateurService.nombreFormateursImpliquesDansUnCours(typeCours);
+
 	}
 }

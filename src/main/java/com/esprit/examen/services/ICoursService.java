@@ -18,9 +18,9 @@ public interface ICoursService {
 
 	List<Cours> getCours();
 
-	List<Session> retrieveHistory(Long coursId);
+	List<Session> retrieveHistory(Long coursId) throws Exception;
 
-	Cours findcoursById(Long coursId);
+	Cours findcoursById(Long coursId) throws Exception;
 
 	void affecterCoursASession(Long coursId, Long sessionId);
 

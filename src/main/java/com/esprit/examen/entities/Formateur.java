@@ -1,16 +1,15 @@
 package com.esprit.examen.entities;
 
+import com.esprit.examen.dto.FormateurModel;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
-
-@Entity
 @Getter
 @Setter
+@Entity
 public class Formateur implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -29,29 +28,9 @@ public class Formateur implements Serializable {
     @OneToMany(mappedBy = "formateur", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     private Set<Session> sessions;
 
-
-    public Formateur(Long id, String nom, String prenom, Poste poste, Contrat contrat, String phone, String email, String password) {
-        super();
-        this.id = id;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.poste = poste;
-        this.phone = phone;
-        this.contrat = contrat;
-        this.email = email;
-        this.password = password;
+    public Formateur(FormateurModel formateurModel) {
     }
 
-
-    public Formateur(String prenom, String nom, Poste poste, Contrat contrat, String email, String password) {
-        this.nom=nom;
-        this.prenom= prenom;
-        this.poste = poste;
-        this.contrat = contrat;
-        this.email = email;
-        this.password = password;
-
-    }
 
     @Override
     public String toString() {

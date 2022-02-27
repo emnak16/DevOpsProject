@@ -96,7 +96,7 @@ public class SessionTest {
         java.sql.Date date2;
         date2 = new java.sql.Date(date3.getTime());
         date1 = new java.sql.Date(date3.getTime());
-        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "wbesbes@vermeg.com", "Vermeg+123");
+        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI,"97189195", "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
         Session s = new Session(date1, date2, 1L, "First session, month long",f);
         sessionService.addSession(s);
@@ -119,7 +119,10 @@ public class SessionTest {
         Set<Cours> setC = new HashSet<Cours>();
         Cours c = new Cours("first course", TypeCours.Informatique, "cours", setS, 10);
         coursService.addCours(c);
+        Cours c1 = new Cours("first course", TypeCours.Informatique, "cours", setS, 20);
+        coursService.addCours(c1);
         setC.add(c);
+        setC.add(c1);
         Session s = new Session(date1, date2, 3L, "First session, month long",setC);
         sessionService.addSession(s);
         s.setSalaireF(500L);
@@ -127,7 +130,7 @@ public class SessionTest {
         setS.add(s);
         sessionService.budgerSession(s.getId(), s.getSalaireF());
         if(s.getPrice()!=null){
-            assertEquals(s.getPrice(), Optional.of((530)));
+            assertEquals(s.getPrice(),Double.valueOf (590));
             sessionService.supprimerSession(s.getId());
             coursService.supprimerCours(c.getId());
         }

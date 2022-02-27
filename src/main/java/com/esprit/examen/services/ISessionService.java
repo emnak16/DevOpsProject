@@ -1,8 +1,9 @@
 package com.esprit.examen.services;
 
-import com.esprit.examen.entities.Cours;
-import com.esprit.examen.entities.Formateur;
+
+
 import com.esprit.examen.entities.Session;
+import com.esprit.examen.exception.NotFoundException;
 
 import java.util.List;
 
@@ -17,13 +18,13 @@ public interface ISessionService {
 
 	List<Session> listSession();
 
-	Session findByIdSession(Long sessionId);
+	Session findByIdSession(Long sessionId) throws NotFoundException;
 
 	Session findSessionByFormateur(Long formateurId);
 
 	void budgerSession(Long sessionId, Long salary);
 
-	List<Session> retreiveSessionsByCoursID(Cours cours);
+
 
 
 }
