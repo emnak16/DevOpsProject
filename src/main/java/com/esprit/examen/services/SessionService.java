@@ -1,6 +1,7 @@
 package com.esprit.examen.services;
 
 
+import com.esprit.examen.entities.Cours;
 import com.esprit.examen.entities.Formateur;
 
 import com.esprit.examen.repositories.FormateurRepository;
@@ -60,7 +61,7 @@ public class SessionService implements ISessionService{
 			sessions.add(s);
 			f.setSessions(sessions);
 		}else{
-		f.getSessions().add(s);
+			f.getSessions().add(s);
 		}
 		formateurService.addorEditFormateur(f);
 		s.setFormateur(f);
@@ -92,9 +93,16 @@ public class SessionService implements ISessionService{
 	public void budgerSession(Long sessionId, Long salary) {
 		Session s = findByIdSession(sessionId);
 		Long nbCours = s.getCours().stream().count();
-		Long unitPrice = s.getCours().stream().findFirst().get().getPrix();
+		double unitPrice = s.getCours().stream().findFirst().get().getPrix();
 		s.setPrice((nbCours*unitPrice*s.getDuree())+salary);
 		modifierSession(s);
+	}
+
+	@Override
+	public List<Session> retreiveSessionsByCoursID(Cours cours)
+	{
+		return sessionRepository.retreiveSessionsByCoursID(cours);
+
 	}
 
 }

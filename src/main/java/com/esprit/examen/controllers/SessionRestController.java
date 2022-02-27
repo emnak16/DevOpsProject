@@ -1,5 +1,6 @@
 package com.esprit.examen.controllers;
 
+import com.esprit.examen.entities.Cours;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.esprit.examen.entities.Session;
 import com.esprit.examen.services.ISessionService;
+
+import java.util.List;
 
 @RestController
 public class SessionRestController {
@@ -43,5 +46,11 @@ public class SessionRestController {
 	@ResponseBody
 	public void supprimerSession(@PathVariable("sessionId") Long sessionId) {
 		sessionService.supprimerSession(sessionId);
+	}
+
+	@PostMapping("/retreiveSessions")
+	@ResponseBody
+	public List<Session> retreiveSessions(@RequestBody Cours cours) {
+		return sessionService.retreiveSessionsByCoursID(cours);
 	}
 }

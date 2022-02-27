@@ -4,6 +4,7 @@ import com.esprit.examen.entities.*;
 import com.esprit.examen.services.ICoursService;
 import com.esprit.examen.services.IFormateurService;
 import com.esprit.examen.services.ISessionService;
+import lombok.extern.java.Log;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Log
 public class SessionTest {
 
     @Autowired
@@ -99,7 +101,7 @@ public class SessionTest {
         Session s = new Session(date1, date2, 1L, "First session, month long",f);
         sessionService.addSession(s);
 
-        sessionService.affecterFormateurASession(f.getId(), s.getId());
+        sessionService.affecterFormateurASession( f.getId() , s.getId());
         Session s2 = sessionService.findSessionByFormateur(f.getId());
         assertNotNull(s2);
         sessionService.supprimerSession(s.getId());
@@ -115,7 +117,7 @@ public class SessionTest {
         date1 = new java.sql.Date(date3.getTime());
         Set<Session> setS = new HashSet<Session>();
         Set<Cours> setC = new HashSet<Cours>();
-        Cours c = new Cours("first course", TypeCours.Informatique, "cours", setS, 10L);
+        Cours c = new Cours("first course", TypeCours.Informatique, "cours", setS, 10);
         coursService.addCours(c);
         setC.add(c);
         Session s = new Session(date1, date2, 3L, "First session, month long",setC);
@@ -123,11 +125,9 @@ public class SessionTest {
         s.setSalaireF(500L);
         sessionService.modifierSession(s);
         setS.add(s);
-
         sessionService.budgerSession(s.getId(), s.getSalaireF());
-
         if(s.getPrice()!=null){
-        assertEquals(s.getPrice(), Optional.of((530L)));
+            assertEquals(s.getPrice(), Optional.of((530)));
             sessionService.supprimerSession(s.getId());
             coursService.supprimerCours(c.getId());
         }

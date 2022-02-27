@@ -26,13 +26,12 @@ public class FormateurService implements IFormateurService {
 
     @Override
     public Long addorEditFormateur(Formateur formateur) {
-
-
         if (formateur.getEmail() != null && Boolean.FALSE.equals(RegexTests.isValidMail(formateur.getEmail()))) {
             log.severe("email wrong format");
             return -1l;
-        } else if (formateur.getEmail() == null || Boolean.FALSE.equals(RegexTests.isValidName(formateur.getNom()))) {
-            log.severe("Name wrong format");
+        } else if (formateur.getNom() == null || Boolean.FALSE.equals(RegexTests.isValidName(formateur.getNom()))) {
+            log.severe("Name wrong format" + formateur.getNom());
+
             return -1l;
         } else if (formateur.getPassword() == null || Boolean.FALSE.equals(RegexTests.isValidPassword(formateur.getPassword()))) {
             log.severe("Password wrong format");

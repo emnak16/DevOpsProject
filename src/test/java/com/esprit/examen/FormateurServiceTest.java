@@ -65,7 +65,7 @@ public class FormateurServiceTest {
         date1 = new java.sql.Date(new Date().getTime());
         Set<Session> setS = new HashSet<Session>();
         Set<Cours> setC = new HashSet<Cours>();
-        Cours c = new Cours("first course", TypeCours.Informatique, "cours", setS, 10L);
+        Cours c = new Cours("first course", TypeCours.Informatique, "cours", setS, 10);
         coursService.addCours(c);
         setC.add(c);
         Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Khouloud@123");

@@ -1,5 +1,6 @@
 package com.esprit.examen.services;
 
+import com.esprit.examen.entities.Cours;
 import com.esprit.examen.entities.Formateur;
 import com.esprit.examen.entities.Session;
 
@@ -21,6 +22,8 @@ public interface ISessionService {
 	Session findSessionByFormateur(Long formateurId);
 
 	void budgerSession(Long sessionId, Long salary);
+
+	List<Session> retreiveSessionsByCoursID(Cours cours);
 
 
 }
