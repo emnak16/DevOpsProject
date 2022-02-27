@@ -26,6 +26,7 @@ public class Formateur implements Serializable {
     @Enumerated(EnumType.STRING)
     private Contrat contrat;
     private String phone;
+    //@Column(unique=true)
     private String email;
     private String password;
     private Boolean admin;

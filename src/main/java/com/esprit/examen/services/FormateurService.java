@@ -4,11 +4,15 @@ import com.esprit.examen.config.RegexTests;
 import com.esprit.examen.entities.Formateur;
 import com.esprit.examen.entities.TypeCours;
 import com.esprit.examen.exception.BadDataException;
+import com.esprit.examen.exception.LogInException;
 import com.esprit.examen.exception.NotFoundException;
 import com.esprit.examen.repositories.FormateurRepository;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +24,10 @@ public class FormateurService implements IFormateurService {
 
     @Autowired
     FormateurRepository formateurRepository;
-   
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Override
     public Long addorEditFormateur(Formateur formateur) throws BadDataException {
 
@@ -49,7 +56,9 @@ public class FormateurService implements IFormateurService {
                 throw new BadDataException("Phone number  wrong format" + formateur.getNom());
             }
 
-        } else {formateurRepository.save(formateur);
+        } else {
+            formateur.setPassword(passwordEncoder.encode(formateur.getPassword()));
+            formateurRepository.save(formateur);
             log.info("added Trainer with information " + formateur.toString());
             return 1l;
 
@@ -103,6 +112,39 @@ public class FormateurService implements IFormateurService {
                 .filter(f -> prenom.equals(f.getPrenom()))
                 .collect(Collectors.toList());
 
+    }
+
+    @Override
+    public int logIn(String email, String password) throws LogInException {
+        try {
+            Formateur f = findFormateurByEmail(email);
+            if (passwordEncoder.matches(password, f.getPassword()))
+                return 1;
+            else
+                return -1;
+        } catch (NotFoundException e) {
+            throw new LogInException("No user found with these credentials");
+
+        }
+
+    }
+
+    @Override
+    public Formateur findFormateurByEmail(String email) throws NotFoundException {
+
+        Formateur f = formateurRepository.findAll()
+                .stream()
+                .filter(f1 -> f1.getEmail().equals(email)).findFirst().orElseThrow(NotFoundException::new);
+
+        log.info("extracted trainer with email: " + email);
+        return f;
+
+    }
+
+
+    @Bean
+    public BCryptPasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
     }
 
 

@@ -28,6 +28,13 @@ public class Cours implements Serializable {
 	public Cours(CoursModel coursModel) {
 	}
 
+	public Cours(String description, TypeCours typeCours, String intitule, double prix) {
+		this.description = description;
+		this.intitule = intitule;
+		this.typeCours = typeCours;
+		this.prix = prix;
+	}
+
 
 	public Long getId() {
 		return id;
@@ -97,7 +104,6 @@ public class Cours implements Serializable {
 
 	public Cours() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	

@@ -21,7 +21,7 @@ public interface ISessionService {
 
 	Session findByIdSession(Long sessionId) throws NotFoundException;
 
-	Session findSessionByFormateur(Long formateurId);
+	List<Session> findSessionByFormateur(Long formateurId) throws NotFoundException;
 
 	void budgerSession(Long sessionId, Long salary);
 

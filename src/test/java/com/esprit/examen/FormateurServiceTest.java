@@ -2,6 +2,7 @@ package com.esprit.examen;
 
 import com.esprit.examen.entities.*;
 import com.esprit.examen.exception.BadDataException;
+import com.esprit.examen.exception.LogInException;
 import com.esprit.examen.services.ICoursService;
 import com.esprit.examen.services.IFormateurService;
 import com.esprit.examen.services.ISessionService;
@@ -9,7 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
@@ -24,7 +24,6 @@ import static org.junit.Assert.*;
 @SpringBootTest
 // we must delete the entity that we added right after the test is verified
 // rolling back transactions made on the database during the test
-@Rollback
 public class FormateurServiceTest {
 
     @Autowired
@@ -87,5 +86,17 @@ public class FormateurServiceTest {
 
     }
 
+    @Test
+    public void login() throws BadDataException, LogInException {
+        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
+        formateurService.addorEditFormateur(f);
+
+        int res = formateurService.logIn(f.getEmail(), "Vermeg+123");
+        assertEquals(1, res);
+        res = formateurService.logIn(f.getEmail(), "kh");
+        assertNotEquals(1, res);
+
+
+    }
 
 }

@@ -4,12 +4,10 @@ import com.esprit.examen.dto.SessionModel;
 import lombok.Getter;
 import lombok.Setter;
 
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-
-import javax.persistence.*;
 
 @Entity
 @Getter
@@ -25,7 +23,7 @@ public class Session implements Serializable{
 	private Date dateFin;
 	private Long duree;
 	private String description;
-	@ManyToOne
+	@ManyToOne()
     Formateur formateur;
 	@ManyToMany(fetch = FetchType.EAGER)
 	Set<Cours> cours;
@@ -80,7 +78,7 @@ public class Session implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "Session [id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", duree=" + duree
+		return "Session [ dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", duree=" + duree
 				+ ", description=" + description + "]";
 	}
 	public Session(Long id, Date dateDebut, Date dateFin, Long duree, String description) {

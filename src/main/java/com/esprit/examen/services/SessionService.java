@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Log
@@ -83,10 +84,20 @@ public class SessionService implements ISessionService{
 	}
 
 	@Override
-	public Session findSessionByFormateur(Long formateurId) {
-		return listSession().stream().filter(session -> session.getFormateur().getId().equals(formateurId))
-				.findFirst()
-				.orElseGet(Session::new);
+	public List<Session> findSessionByFormateur(Long formateurId) throws NotFoundException {
+		Formateur f = formateurService.findFormateurById(formateurId);
+		log.info("iff" + f.toString());
+		List<Session> s = listSession();
+		log.info(s + "LIST");
+
+		List<Session> s1 = listSession()
+				.stream()
+				.filter(
+						session -> session.getFormateur().getId().equals(formateurId))
+				.collect(Collectors.toList());
+
+		return s1;
+
 	}
 
 	@Override

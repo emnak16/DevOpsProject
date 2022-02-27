@@ -1,23 +1,19 @@
 package com.esprit.examen;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
 import com.esprit.examen.entities.Cours;
 import com.esprit.examen.entities.Session;
 import com.esprit.examen.entities.TypeCours;
 import com.esprit.examen.services.ICoursService;
 import com.esprit.examen.services.ISessionService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -37,7 +33,7 @@ public class CoursTest {
 
     @Test
     public void addCoursTest() {
-        Cours c = new Cours("Dev Web- full-stack",TypeCours.Informatique,"dev web!!!", 20);
+        Cours c = new Cours("Dev Web- full-stack", TypeCours.Informatique, "dev web!!!", 20.0);
         CoursService.addCours(c);
         boolean res= CoursService.getCours().stream().anyMatch(curs-> curs.toString().equals(c.toString()));
         assertTrue(res);

@@ -1,8 +1,10 @@
 package com.esprit.examen.controllers;
+
 import com.esprit.examen.dto.FormateurModel;
 import com.esprit.examen.entities.Formateur;
 import com.esprit.examen.entities.TypeCours;
 import com.esprit.examen.exception.BadDataException;
+import com.esprit.examen.exception.LogInException;
 import com.esprit.examen.exception.NotFoundException;
 import com.esprit.examen.services.IFormateurService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,19 @@ public class FormateurRestController {
     }
 
 
+    @GetMapping("/logIn")
+    @ResponseBody
+    public ResponseEntity<Integer> login(@RequestBody String email, String password) {
+        int res = 1;
+        try {
+            res = formateurService.logIn(email, password);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (LogInException e) {
+            res = -1;
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+
+        }
+    }
     @DeleteMapping("/supprimerFormateur/{formateurId}")
     @ResponseBody
     public ResponseEntity<String> supprimerFormateur(@PathVariable("formateurId") Long formateurId) {
