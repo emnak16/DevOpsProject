@@ -1,14 +1,18 @@
 package com.esprit.examen.entities;
 
 import com.esprit.examen.dto.FormateurModel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
-@Getter
-@Setter
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+
 @Entity
 public class Formateur implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -57,9 +61,6 @@ public class Formateur implements Serializable {
     }
 
 
-    public Formateur() {
-        super();
-    }
 
 
 }

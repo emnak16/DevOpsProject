@@ -3,15 +3,14 @@ package com.esprit.examen.services;
 
 import com.esprit.examen.entities.Cours;
 import com.esprit.examen.entities.Formateur;
-
+import com.esprit.examen.entities.Session;
+import com.esprit.examen.exception.BadDataException;
 import com.esprit.examen.exception.NotFoundException;
 import com.esprit.examen.repositories.FormateurRepository;
+import com.esprit.examen.repositories.SessionRepository;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.esprit.examen.entities.Session;
-import com.esprit.examen.repositories.SessionRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
@@ -51,7 +50,7 @@ public class SessionService implements ISessionService{
 
 	@Override
 	@Transactional
-	public void affecterFormateurASession(Long formateurId, Long sessionId) {
+	public void affecterFormateurASession(Long formateurId, Long sessionId) throws BadDataException {
 
 		Session s = sessionRepository.findById(sessionId)
 				.orElse(new Session());

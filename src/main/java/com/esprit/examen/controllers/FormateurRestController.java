@@ -1,52 +1,70 @@
 package com.esprit.examen.controllers;
-
 import com.esprit.examen.dto.FormateurModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.esprit.examen.entities.Formateur;
 import com.esprit.examen.entities.TypeCours;
+import com.esprit.examen.exception.BadDataException;
+import com.esprit.examen.exception.NotFoundException;
 import com.esprit.examen.services.IFormateurService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 @RestController
+@RequestMapping("/formateurs")
 public class FormateurRestController {
 
-	@Autowired
-	IFormateurService formateurService;
-	
-	@PostMapping("/ajouterFormateur")
-	@ResponseBody
-	public Formateur ajouterFormateur(@RequestBody FormateurModel formateurModel) {
-		Formateur formateur = new Formateur(formateurModel);
-		formateurService.addorEditFormateur(formateur);
-		return formateur;
-	}
+    @Autowired
+    IFormateurService formateurService;
 
-	@PutMapping("/modifierFormateur")
-	@ResponseBody
-	public Formateur modifierFormateur(@RequestBody FormateurModel formateurModel) {
-		Formateur formateur = new Formateur(formateurModel);
-		formateurService.addorEditFormateur(formateur);
-		return formateur;
-	}
+    @PostMapping("/addOrEditFormateur")
+    @ResponseBody
+    public ResponseEntity<String> ajouterFormateur(@RequestBody FormateurModel formateurModel) {
+        try {
+            Formateur formateur = new Formateur(formateurModel);
+            formateurService.addorEditFormateur(new Formateur(formateurModel));
+            return new ResponseEntity<>(formateur.toString(), HttpStatus.OK);
+        } catch (BadDataException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
-	@DeleteMapping("/supprimerFormateur/{formateurId}")
-	@ResponseBody
-	public void supprimerFormateur(@PathVariable("formateurId") Long formateurId) {
-		formateurService.supprimerFormateur(formateurId);
-	}
-	
-	@GetMapping("/nombreFormateursImpliquesDansUnCours/{typeCours}")
-	@ResponseBody
-	public Long nombreFormateursImpliquesDansUnCours(@PathVariable("typeCours") TypeCours typeCours) {
-		return formateurService.nombreFormateursImpliquesDansUnCours(typeCours);
 
-	}
+    @DeleteMapping("/supprimerFormateur/{formateurId}")
+    @ResponseBody
+    public ResponseEntity<String> supprimerFormateur(@PathVariable("formateurId") Long formateurId) {
+        formateurService.supprimerFormateur(formateurId);
+        return ResponseEntity.ok("Formateur deleted");
+    }
+
+    @GetMapping("/nombreFormateursImpliquesDansUnCours/{typeCours}")
+    @ResponseBody
+    public ResponseEntity<Long> nombreFormateursImpliquesDansUnCours(@PathVariable("typeCours") TypeCours typeCours) {
+        Long nb = formateurService.nombreFormateursImpliquesDansUnCours(typeCours);
+        return new ResponseEntity<>(nb, HttpStatus.OK);
+
+    }
+
+    @GetMapping("/getFormateurById/{formateruId}")
+    @ResponseBody
+    public ResponseEntity<Formateur> getFormateurByID(@PathVariable("formateruId") Long formateurId) {
+        try {
+            Formateur formateur = formateurService.findFormateurById(formateurId);
+            return new ResponseEntity<>(formateur, HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/listFormateur")
+    @ResponseBody
+    public ResponseEntity<Collection<Formateur>> listFormateurs() {
+
+        return new ResponseEntity<>(formateurService.listFormateurs(), HttpStatus.OK);
+
+    }
+
+
 }

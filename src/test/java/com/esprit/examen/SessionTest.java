@@ -1,6 +1,7 @@
 package com.esprit.examen;
 
 import com.esprit.examen.entities.*;
+import com.esprit.examen.exception.BadDataException;
 import com.esprit.examen.services.ICoursService;
 import com.esprit.examen.services.IFormateurService;
 import com.esprit.examen.services.ISessionService;
@@ -11,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.text.ParseException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -90,7 +93,7 @@ public class SessionTest {
 
     }
     @Test
-    public void affecterFormateurASessionTest(){
+    public void affecterFormateurASessionTest() throws BadDataException {
         Date date1 = null;
         Date date3=new Date();
         java.sql.Date date2;

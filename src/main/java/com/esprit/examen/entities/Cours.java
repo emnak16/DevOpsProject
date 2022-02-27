@@ -2,15 +2,11 @@ package com.esprit.examen.entities;
 
 import com.esprit.examen.dto.CoursModel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.extern.java.Log;
-
-import java.io.Serializable;
-import java.util.Set;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -91,7 +87,7 @@ public class Cours implements Serializable {
 	}
 
 
-	public Cours(String description, TypeCours typeCours, String intitule, double prix) {
+	public Cours(String description, TypeCours typeCours, String intitule, double prix, Set<Session> sessions) {
 		this.description = description;
 		this.typeCours = typeCours;
 		this.intitule = intitule;

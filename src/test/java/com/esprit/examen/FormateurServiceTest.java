@@ -1,6 +1,7 @@
 package com.esprit.examen;
 
 import com.esprit.examen.entities.*;
+import com.esprit.examen.exception.BadDataException;
 import com.esprit.examen.services.ICoursService;
 import com.esprit.examen.services.IFormateurService;
 import com.esprit.examen.services.ISessionService;
@@ -36,7 +37,7 @@ public class FormateurServiceTest {
     ICoursService coursService;
 
     @Test
-    public void addorEditFormateurTest() {
+    public void addorEditFormateurTest() throws BadDataException {
         Formateur f = new Formateur("khouloud", "Ben Taoues", Poste.Ingénieur, Contrat.CDI, "97189195", "kbentaoues@vermeg.com", "Khouloud@123");
         formateurService.addorEditFormateur(f);
         boolean res = formateurService.listFormateurs().stream().anyMatch(formateur -> formateur.toString().equals(f.toString()));
@@ -49,7 +50,7 @@ public class FormateurServiceTest {
 
 
     @Test
-    public void supprimerFormateurTest() {
+    public void supprimerFormateurTest() throws BadDataException {
         Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI,"95131212", "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
         formateurService.supprimerFormateur(f.getId());
@@ -58,7 +59,7 @@ public class FormateurServiceTest {
     }
 
     @Test
-    public void nombreFormateursImpliquesDansUnCoursTest() {
+    public void nombreFormateursImpliquesDansUnCoursTest() throws BadDataException {
         Date date1 = null;
         Date date2 = null;
         date2 = new java.sql.Date(new Date().getTime());
@@ -78,7 +79,7 @@ public class FormateurServiceTest {
     }
 
     @Test
-    public void listFormateurs() {
+    public void listFormateurs() throws BadDataException {
         Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI,"95131212", "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
         List <Formateur> formateurList= formateurService.listFormateurs();

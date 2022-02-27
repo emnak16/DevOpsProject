@@ -3,6 +3,7 @@ package com.esprit.examen.services;
 
 
 import com.esprit.examen.entities.Session;
+import com.esprit.examen.exception.BadDataException;
 import com.esprit.examen.exception.NotFoundException;
 
 import java.util.List;
@@ -13,8 +14,8 @@ public interface ISessionService {
 	Long modifierSession(Session session);
 
 	void supprimerSession(Long sessionId);
-	
-	void affecterFormateurASession (Long formateurId, Long sessionId);
+
+	void affecterFormateurASession(Long formateurId, Long sessionId) throws BadDataException;
 
 	List<Session> listSession();
 
