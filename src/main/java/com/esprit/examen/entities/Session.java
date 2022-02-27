@@ -143,13 +143,6 @@ public class Session implements Serializable{
 		this.description = description;
 	}
 
-    public Session(Date dateDebut, Date dateFin, Long duree, String description, Formateur formateur) {
-        this.dateDebut = dateDebut;
-        this.dateFin = dateFin;
-        this.duree = duree;
-        this.description = description;
-        this.formateur = formateur;
-    }
 
 	public Session() {
 		super();

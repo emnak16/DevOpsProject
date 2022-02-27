@@ -99,7 +99,7 @@ public class SessionTest {
         Session s = new Session(date1, date2, 1L, "First session, month long",f);
         sessionService.addSession(s);
 
-        sessionService.affecterFormateurASession(s.getId(), f.getId());
+        sessionService.affecterFormateurASession(f.getId(), s.getId());
         Session s2 = sessionService.findSessionByFormateur(f.getId());
         assertNotNull(s2);
         sessionService.supprimerSession(s.getId());

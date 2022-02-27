@@ -2,6 +2,8 @@ package com.esprit.examen.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -26,10 +28,12 @@ public class Formateur implements Serializable {
     private String email;
     private String password;
     private Boolean admin;
-    @OneToMany(mappedBy = "formateur", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "formateur",fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     private Set<Session> sessions;
 
-
+    @Autowired
+    @Transient
+    PasswordEncoder passwordEncoder;
 
        public Formateur(Long id, String nom, String prenom, Poste poste,  Contrat contrat, String email, String password) {
         super();
@@ -62,7 +66,7 @@ public class Formateur implements Serializable {
                 ", poste=" + poste +
                 ", contrat=" + contrat +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                ", password='" + passwordEncoder.encode(password) + '\'' +
                 ", admin=" + admin +
                 '}';
     }
