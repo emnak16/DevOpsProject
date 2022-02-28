@@ -39,7 +39,7 @@ public class FormateurRestController {
     public ResponseEntity<Integer> login(@RequestBody String email, String password) {
         int res = 1;
         try {
-            res = formateurService.logIn(email, password);
+            formateurService.logIn(email, password);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (LogInException e) {
             res = -1;
