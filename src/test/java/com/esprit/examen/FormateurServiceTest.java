@@ -10,17 +10,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 
+@Rollback
 @SpringBootTest
 // we must delete the entity that we added right after the test is verified
 // rolling back transactions made on the database during the test
@@ -39,12 +39,15 @@ public class FormateurServiceTest {
     public void addorEditFormateurTest() throws BadDataException {
         Formateur f = new Formateur("khouloud", "Ben Taoues", Poste.Ingénieur, Contrat.CDI, "97189195", "kbentaoues@vermeg.com", "Khouloud@123");
         formateurService.addorEditFormateur(f);
-        boolean res = formateurService.listFormateurs().stream().anyMatch(formateur -> formateur.toString().equals(f.toString()));
-        assertTrue(res);
+        Formateur f2;
+        f2 = formateurService.listFormateurs().stream().filter(formateur -> formateur.toString().equals(f.toString())).findFirst().get();
+
+        assertNotNull(f2);
         f.setEmail("walid.besbes@gmail.com");
         formateurService.addorEditFormateur(f);
-        res = formateurService.listFormateurs().stream().anyMatch(formateur -> formateur.toString().equals(f.toString()));
-        assertTrue(res);
+        f2 = formateurService.listFormateurs().stream().filter(formateur -> formateur.toString().equals(f.toString())).findFirst().get();
+        assertNotNull(f2);
+        formateurService.supprimerFormateur(f2.getId());
     }
 
 
@@ -58,23 +61,28 @@ public class FormateurServiceTest {
     }
 
     @Test
-    public void nombreFormateursImpliquesDansUnCoursTest() throws BadDataException {
+    public void nombreFormateursImpliquesDansUnCoursTest() throws Exception {
         Date date1 = null;
         Date date2 = null;
         date2 = new java.sql.Date(new Date().getTime());
         date1 = new java.sql.Date(new Date().getTime());
-        Set<Session> setS = new HashSet<Session>();
-        Set<Cours> setC = new HashSet<Cours>();
-        Cours c = new Cours("first course", TypeCours.Informatique, "cours", setS, 10);
-        coursService.addCours(c);
-        setC.add(c);
+        Formateur f2;
         Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Khouloud@123");
         formateurService.addorEditFormateur(f);
-        Session s = new Session(date1, date2, 1L, "First session, month long", setC, f);
+        f2 = formateurService.listFormateurs().stream().filter(formateur -> formateur.toString().equals(f.toString())).findFirst().get();
+        Session s = new Session(date1, date2, 1L, "First session, month long");
         sessionService.addSession(s);
-        setS.add(s);
+        Session s2 = sessionService.listSession().stream().filter(session -> session.toString().equals(s.toString())).findFirst().get();
+        sessionService.affecterFormateurASession(f2.getId(), s2.getId());
+        Cours c = new Cours("first course", TypeCours.Informatique, "cours", 10);
+        coursService.addCours(c);
+        Cours c2 = coursService.getCours().stream().filter(cours -> cours.toString().equals(c.toString())).findFirst().get();
+        coursService.affecterCoursASession(c2.getId(), s2.getId());
         long nbFormateur = formateurService.nombreFormateursImpliquesDansUnCours(TypeCours.Informatique);
         assertEquals(1L, nbFormateur);
+        sessionService.supprimerSession(s2.getId());
+        formateurService.supprimerFormateur(f2.getId());
+        coursService.supprimerCours(c2.getId());
     }
 
     @Test
@@ -83,6 +91,7 @@ public class FormateurServiceTest {
         formateurService.addorEditFormateur(f);
         List <Formateur> formateurList= formateurService.listFormateurs();
         assertNotEquals(formateurList.size(), 0);
+        formateurService.supprimerFormateur(f.getId());
 
     }
 
@@ -95,6 +104,7 @@ public class FormateurServiceTest {
         assertEquals(1, res);
         res = formateurService.logIn(f.getEmail(), "kh");
         assertNotEquals(1, res);
+        formateurService.supprimerFormateur(f.getId());
 
 
     }

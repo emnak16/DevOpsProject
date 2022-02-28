@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.UnknownServiceException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Log
@@ -51,11 +51,11 @@ public class SessionService implements ISessionService{
 
 	@Override
 	@Transactional
-	public void affecterFormateurASession(Long formateurId, Long sessionId) throws BadDataException {
+	public void affecterFormateurASession(Long formateurId, Long sessionId) throws BadDataException, UnknownServiceException {
 
 		Session s = sessionRepository.findById(sessionId)
-				.orElse(new Session());
-		Formateur f = formateurRepository.findById(formateurId).orElse(new Formateur());
+				.orElseThrow(UnknownServiceException::new);
+		Formateur f = formateurRepository.findById(formateurId).orElseThrow(UnknownServiceException::new);
 
 		if(f.getSessions() == null){
 			Set<Session> sessions = new HashSet<>();
@@ -84,20 +84,10 @@ public class SessionService implements ISessionService{
 	}
 
 	@Override
-	public List<Session> findSessionByFormateur(Long formateurId) throws NotFoundException {
-		Formateur f = formateurService.findFormateurById(formateurId);
-		log.info("iff" + f.toString());
-		List<Session> s = listSession();
-		log.info(s + "LIST");
+	public Set<Session> findSessionByFormateur(Long formateurId) {
 
-		List<Session> s1 = listSession()
-				.stream()
-				.filter(
-						session -> session.getFormateur().getId().equals(formateurId))
-				.collect(Collectors.toList());
 
-		return s1;
-
+		return sessionRepository.findSessionByFormateur(formateurId);
 	}
 
 	@Override

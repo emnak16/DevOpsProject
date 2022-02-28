@@ -8,6 +8,8 @@ import com.esprit.examen.services.ISessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.UnknownServiceException;
+
 
 @RestController
 public class SessionRestController {
@@ -33,7 +35,7 @@ public class SessionRestController {
 	
 	@PutMapping("/affecterFormateurASession/{formateurId}/{sessionId}")
 	@ResponseBody
-	public String affecterFormateurASession(@PathVariable("formateurId") Long formateurId, @PathVariable("sessionId") Long sessionId) throws BadDataException {
+    public String affecterFormateurASession(@PathVariable("formateurId") Long formateurId, @PathVariable("sessionId") Long sessionId) throws BadDataException, UnknownServiceException {
 		sessionService.affecterFormateurASession(formateurId, sessionId);
 		return "formateur affecté correctement";
 	}

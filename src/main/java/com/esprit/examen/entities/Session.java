@@ -24,9 +24,9 @@ public class Session implements Serializable{
 	private Long duree;
 	private String description;
 	@ManyToOne()
-    Formateur formateur;
+	private Formateur formateur;
 	@ManyToMany(fetch = FetchType.EAGER)
-	Set<Cours> cours;
+	private Set<Cours> cours;
 	private Double price;
 
 	private Long salaireF;
@@ -148,7 +148,6 @@ public class Session implements Serializable{
 
 	public Session() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	

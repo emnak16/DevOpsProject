@@ -11,8 +11,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.net.UnknownServiceException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +25,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Rollback
 @Log
 public class SessionTest {
 
@@ -34,6 +37,7 @@ public class SessionTest {
     ICoursService coursService;
 
     @Test
+
     public void ajouterSessionTest(){
 
         Date date1 = null;
@@ -45,6 +49,7 @@ public class SessionTest {
         sessionService.addSession(s);
         boolean added = sessionService.listSession().stream().anyMatch(session -> session.toString().equals(s.toString()));
         assertTrue(added);
+        sessionService.supprimerSession(s.getId());
     }
 
     @Test
@@ -60,6 +65,8 @@ public class SessionTest {
         sessionService.modifierSession(s);
         boolean added = sessionService.listSession().stream().anyMatch(session -> session.toString().equals(s.toString()));
         assertTrue(added);
+        sessionService.supprimerSession(s.getId());
+
 
     }
 
@@ -94,7 +101,7 @@ public class SessionTest {
 
     }
     @Test
-    public void affecterFormateurASessionTest() throws BadDataException, NotFoundException {
+    public void affecterFormateurASessionTest() throws BadDataException, NotFoundException, UnknownServiceException {
         Date date1 = null;
         Date date3=new Date();
         java.sql.Date date2;
@@ -106,9 +113,10 @@ public class SessionTest {
         sessionService.addSession(s);
 
         long i = f.getId();
+        Formateur f1 = formateurService.findFormateurByEmail(f.getEmail());
         Session sk = sessionService.listSession().stream().filter(sh -> sh.toString().equals(s.toString())).findFirst().get();
-        sessionService.affecterFormateurASession(f.getId(), sk.getId());
-        Session s2 = sessionService.findSessionByFormateur(f.getId()).stream().filter(sess -> sess.getId() == s.getId()).findFirst().get();
+        sessionService.affecterFormateurASession(f1.getId(), sk.getId());
+        Session s2 = sessionService.findSessionByFormateur(f1.getId()).stream().filter(sess -> sess.getId() == s.getId()).findFirst().get();
         assertNotNull(s2);
         sessionService.supprimerSession(s.getId());
         formateurService.supprimerFormateur(f.getId());
@@ -127,15 +135,13 @@ public class SessionTest {
         Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "97189195", "wbesbes@gmail.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
         Formateur f1 = formateurService.findFormateurByEmail(f.getEmail());
-
         s.setFormateur(f1);
         sessionService.modifierSession(s);
         Session s2 = sessionService.findByIdSession(s.getId());
-        log.info(f1.getId() + "ID");
-        log.info(s2.toString());
-        log.info(s2.getFormateur().toString() + "FOM");
-        List<Session> s1 = sessionService.findSessionByFormateur(f1.getId());
+        Set<Session> s1 = sessionService.findSessionByFormateur(f1.getId());
         assertNotNull(s1);
+        sessionService.supprimerSession(s.getId());
+        formateurService.supprimerFormateur(f.getId());
 
 
     }
@@ -162,8 +168,10 @@ public class SessionTest {
         sessionService.budgerSession(s.getId(), s.getSalaireF());
         if(s.getPrice()!=null){
             assertEquals(s.getPrice(),Double.valueOf (590));
-            sessionService.supprimerSession(s.getId());
-            coursService.supprimerCours(c.getId());
+
         }
+        sessionService.supprimerSession(s.getId());
+        coursService.supprimerCours(c.getId());
+        coursService.supprimerCours(c1.getId());
     }
 }

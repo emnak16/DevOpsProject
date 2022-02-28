@@ -65,7 +65,7 @@ public List<Cours> listeCours() {
 
 @PutMapping("/affecterCoursASession/{coursId}/{sessionId}")
 @ResponseBody
-public String affecterFormateurASession(@PathVariable("coursId")  Long coursId, @PathVariable("sessionId") Long sessionId) {
+public String affecterFormateurASession(@PathVariable("coursId") Long coursId, @PathVariable("sessionId") Long sessionId) throws Exception {
 	coursService.affecterCoursASession(coursId, sessionId);
 	return "cours affecté correctement";
 }
