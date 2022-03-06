@@ -43,7 +43,7 @@ public class CoursTest {
 
     @Test
     public void addCoursTest() {
-        Cours c = new Cours("Dev Web- full-stack", TypeCours.Informatique, "dev web!!!", 20);
+        Cours c = new Cours("Dev Web- full-stack", TypeCours.INFORMATIQUE, "dev web!!!", 20);
         CoursService.addCours(c);
         boolean res= CoursService.getCours().stream().anyMatch(curs-> curs.toString().equals(c.toString()));
         assertTrue(res);
@@ -54,7 +54,7 @@ public class CoursTest {
 
     @Test
     public void modifierCoursTest(){
-        Cours c = new Cours("Dev Web- full-stack",TypeCours.Informatique,"dev web", 20);
+        Cours c = new Cours("Dev Web- full-stack", TypeCours.INFORMATIQUE, "dev web", 20);
         CoursService.modifierCours(c);
         c.setDescription("Description: Dev Web- full-stack");
         CoursService.modifierCours(c);
@@ -65,7 +65,7 @@ public class CoursTest {
 
     @Test
     public void supprimerCoursTest() {
-        Cours c = new Cours("Dev Web- full-stack",TypeCours.Informatique,"dev web", 20);
+        Cours c = new Cours("Dev Web- full-stack", TypeCours.INFORMATIQUE, "dev web", 20);
         CoursService.addCours(c);
         CoursService.supprimerCours(c.getId());
         boolean res= CoursService.getCours().stream().anyMatch(cours-> cours.toString().equals(c.toString()));
@@ -74,7 +74,7 @@ public class CoursTest {
 
     @Test
     public void listecoursTest() {
-        Cours c = new Cours("Dev Web- full-stack",TypeCours.Informatique,"dev web", 20);
+        Cours c = new Cours("Dev Web- full-stack", TypeCours.INFORMATIQUE, "dev web", 20);
         CoursService.addCours(c);
         List <Cours> CoursList= CoursService.getCours();
         assertNotEquals(CoursList.size(), 0);
@@ -84,7 +84,7 @@ public class CoursTest {
 
     @Test
     public void findcoursByIdTest() throws Exception {
-        Cours c = new Cours("Dev Web- full-stack",TypeCours.Informatique,"dev web!!!", 20);
+        Cours c = new Cours("Dev Web- full-stack", TypeCours.INFORMATIQUE, "dev web!!!", 20);
         CoursService.addCours(c);
         boolean res = CoursService.findcoursById(c.getId()).toString().equals(c.toString());
         assertTrue(res);
@@ -94,7 +94,7 @@ public class CoursTest {
 
     @Test
     public void affecterCoursASessionTest() throws Exception {
-        Cours c = new Cours("Dev Web- full-stack",TypeCours.Informatique,"dev web!!!", 20);
+        Cours c = new Cours("Dev Web- full-stack", TypeCours.INFORMATIQUE, "dev web!!!", 20);
         CoursService.addCours(c);
 
         Date date1 = null;

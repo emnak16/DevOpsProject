@@ -37,7 +37,7 @@ public class FormateurServiceTest {
 
     @Test
     public void addorEditFormateurTest() throws BadDataException {
-        Formateur f = new Formateur("khouloud", "Ben Taoues", Poste.Ingénieur, Contrat.CDI, "97189195", "kbentaoues@vermeg.com", "Khouloud@123");
+        Formateur f = new Formateur("khouloud", "Ben Taoues", Poste.INGENIEUR, Contrat.CDI, "97189195", "kbentaoues@vermeg.com", "Khouloud@123");
         formateurService.addorEditFormateur(f);
         Formateur f2;
         f2 = formateurService.listFormateurs().stream().filter(formateur -> formateur.toString().equals(f.toString())).findFirst().get();
@@ -53,7 +53,7 @@ public class FormateurServiceTest {
 
     @Test
     public void supprimerFormateurTest() throws BadDataException {
-        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI,"95131212", "wbesbes@vermeg.com", "Vermeg+123");
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
         formateurService.supprimerFormateur(f.getId());
         boolean res = formateurService.listFormateurs().stream().anyMatch(formateur -> formateur.toString().equals(f.toString()));
@@ -67,18 +67,18 @@ public class FormateurServiceTest {
         date2 = new java.sql.Date(new Date().getTime());
         date1 = new java.sql.Date(new Date().getTime());
         Formateur f2;
-        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Khouloud@123");
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Khouloud@123");
         formateurService.addorEditFormateur(f);
         f2 = formateurService.listFormateurs().stream().filter(formateur -> formateur.toString().equals(f.toString())).findFirst().get();
         Session s = new Session(date1, date2, 1L, "First session, month long");
         sessionService.addSession(s);
         Session s2 = sessionService.listSession().stream().filter(session -> session.toString().equals(s.toString())).findFirst().get();
         sessionService.affecterFormateurASession(f2.getId(), s2.getId());
-        Cours c = new Cours("first course", TypeCours.Informatique, "cours", 10);
+        Cours c = new Cours("first course", TypeCours.INFORMATIQUE, "cours", 10);
         coursService.addCours(c);
         Cours c2 = coursService.getCours().stream().filter(cours -> cours.toString().equals(c.toString())).findFirst().get();
         coursService.affecterCoursASession(c2.getId(), s2.getId());
-        long nbFormateur = formateurService.nombreFormateursImpliquesDansUnCours(TypeCours.Informatique);
+        long nbFormateur = formateurService.nombreFormateursImpliquesDansUnCours(TypeCours.INFORMATIQUE);
         assertEquals(1L, nbFormateur);
         sessionService.supprimerSession(s2.getId());
         formateurService.supprimerFormateur(f2.getId());
@@ -87,7 +87,7 @@ public class FormateurServiceTest {
 
     @Test
     public void listFormateurs() throws BadDataException {
-        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI,"95131212", "wbesbes@vermeg.com", "Vermeg+123");
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
         List <Formateur> formateurList= formateurService.listFormateurs();
         assertNotEquals(formateurList.size(), 0);
@@ -97,7 +97,7 @@ public class FormateurServiceTest {
 
     @Test
     public void login() throws BadDataException, LogInException {
-        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
 
         int res = formateurService.logIn(f.getEmail(), "Vermeg+123");

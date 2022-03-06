@@ -107,7 +107,7 @@ public class SessionTest {
         java.sql.Date date2;
         date2 = new java.sql.Date(date3.getTime());
         date1 = new java.sql.Date(date3.getTime());
-        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "97189195", "wbesbes@gmail.com", "Vermeg+123");
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "97189195", "wbesbes@gmail.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
         Session s = new Session(date1, date2, 1L, "First session, month long");
         sessionService.addSession(s);
@@ -132,7 +132,7 @@ public class SessionTest {
         Session s = new Session(date1, date2, 3L, "First session, month long");
         sessionService.addSession(s);
 
-        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "97189195", "wbesbes@gmail.com", "Vermeg+123");
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "97189195", "wbesbes@gmail.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
         Formateur f1 = formateurService.findFormateurByEmail(f.getEmail());
         s.setFormateur(f1);
@@ -154,9 +154,9 @@ public class SessionTest {
         date1 = new java.sql.Date(date3.getTime());
         Set<Session> setS = new HashSet<Session>();
         Set<Cours> setC = new HashSet<Cours>();
-        Cours c = new Cours("first course", TypeCours.Informatique, "cours", setS, 10);
+        Cours c = new Cours("first course", TypeCours.INFORMATIQUE, "cours", setS, 10);
         coursService.addCours(c);
-        Cours c1 = new Cours("first course", TypeCours.Informatique, "cours", setS, 20);
+        Cours c1 = new Cours("first course", TypeCours.INFORMATIQUE, "cours", setS, 20);
         coursService.addCours(c1);
         setC.add(c);
         setC.add(c1);
