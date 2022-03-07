@@ -32,9 +32,8 @@ public class FormateurService implements IFormateurService {
     public Long addorEditFormateur(Formateur formateur) throws BadDataException {
 
         if (formateur.getEmail() != null && Boolean.FALSE.equals(RegexTests.isValidMail(formateur.getEmail()))) {
-            {
+                {
                 log.severe("email wrong format");
-
 
                 throw new BadDataException("email wrong format");
             }
@@ -48,12 +47,12 @@ public class FormateurService implements IFormateurService {
         } else if (formateur.getPassword() == null || Boolean.FALSE.equals(RegexTests.isValidPassword(formateur.getPassword()))) {
             {
                 log.severe("Password wrong format");
-                throw new BadDataException("Password wrong format" + formateur.getNom());
+                throw new BadDataException("Password wrong format" + formateur.getPassword());
             }
         } else if (formateur.getPhone() != null && Boolean.FALSE.equals(RegexTests.isAvalidPhone(formateur.getPhone()))) {
             {
                 log.severe("Phone number  wrong format");
-                throw new BadDataException("Phone number  wrong format" + formateur.getNom());
+                throw new BadDataException("Phone number  wrong format" + formateur.getPhone());
             }
 
         } else {
