@@ -1,30 +1,28 @@
 package com.esprit.examen;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.*;
-
 import com.esprit.examen.entities.Cours;
 import com.esprit.examen.entities.Session;
 import com.esprit.examen.entities.TypeCours;
 import com.esprit.examen.services.ICoursService;
 import com.esprit.examen.services.ISessionService;
-import com.esprit.examen.services.SessionService;
 import com.lowagie.text.DocumentException;
 import lombok.extern.java.Log;
-import org.apache.catalina.connector.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import static org.junit.Assert.*;
 
@@ -45,7 +43,7 @@ public class CoursTest {
 
     @Test
     public void addCoursTest() {
-        Cours c = new Cours("Dev Web- full-stack",TypeCours.Informatique,"dev web!!!", 20);
+        Cours c = new Cours("Dev Web- full-stack", TypeCours.INFORMATIQUE, "dev web!!!", 20);
         CoursService.addCours(c);
         boolean res= CoursService.getCours().stream().anyMatch(curs-> curs.toString().equals(c.toString()));
         assertTrue(res);
@@ -56,18 +54,18 @@ public class CoursTest {
 
     @Test
     public void modifierCoursTest(){
-        Cours c = new Cours("Dev Web- full-stack",TypeCours.Informatique,"dev web", 20);
+        Cours c = new Cours("Dev Web- full-stack", TypeCours.INFORMATIQUE, "dev web", 20);
         CoursService.modifierCours(c);
         c.setDescription("Description: Dev Web- full-stack");
         CoursService.modifierCours(c);
-        boolean res= CoursService.getCours().stream().anyMatch(curs-> curs.toString().equals(c.toString()));
+        boolean res = CoursService.getCours().stream().anyMatch(curs -> curs.toString().equals(c.toString()));
         assertTrue(res);
         CoursService.supprimerCours(c.getId());
     }
 
     @Test
     public void supprimerCoursTest() {
-        Cours c = new Cours("Dev Web- full-stack",TypeCours.Informatique,"dev web", 20);
+        Cours c = new Cours("Dev Web- full-stack", TypeCours.INFORMATIQUE, "dev web", 20);
         CoursService.addCours(c);
         CoursService.supprimerCours(c.getId());
         boolean res= CoursService.getCours().stream().anyMatch(cours-> cours.toString().equals(c.toString()));
@@ -76,7 +74,7 @@ public class CoursTest {
 
     @Test
     public void listecoursTest() {
-        Cours c = new Cours("Dev Web- full-stack",TypeCours.Informatique,"dev web", 20);
+        Cours c = new Cours("Dev Web- full-stack", TypeCours.INFORMATIQUE, "dev web", 20);
         CoursService.addCours(c);
         List <Cours> CoursList= CoursService.getCours();
         assertNotEquals(CoursList.size(), 0);
@@ -86,9 +84,9 @@ public class CoursTest {
 
     @Test
     public void findcoursByIdTest() throws Exception {
-        Cours c = new Cours("Dev Web- full-stack",TypeCours.Informatique,"dev web!!!", 20);
+        Cours c = new Cours("Dev Web- full-stack", TypeCours.INFORMATIQUE, "dev web!!!", 20);
         CoursService.addCours(c);
-        boolean res= CoursService.findcoursById(c.getId()).toString().equals(c.toString());
+        boolean res = CoursService.findcoursById(c.getId()).toString().equals(c.toString());
         assertTrue(res);
         CoursService.supprimerCours(c.getId());
     }
@@ -96,7 +94,7 @@ public class CoursTest {
 
     @Test
     public void affecterCoursASessionTest() throws Exception {
-        Cours c = new Cours("Dev Web- full-stack",TypeCours.Informatique,"dev web!!!", 20);
+        Cours c = new Cours("Dev Web- full-stack", TypeCours.INFORMATIQUE, "dev web!!!", 20);
         CoursService.addCours(c);
 
         Date date1 = null;
@@ -109,33 +107,33 @@ public class CoursTest {
 
         CoursService.affecterCoursASession(c.getId(),s.getId());
 
-        log.info(s+"Session");
-        log.info(c+"Cours");
+        log.info(s + "Session");
+        log.info(c + "Cours");
 
 
-        Cours cNew=CoursService.findcoursById(c.getId());
-        Session sNew= sessionService.findByIdSession(s.getId());
+        Cours cNew = CoursService.findcoursById(c.getId());
+        Session sNew = sessionService.findByIdSession(s.getId());
 
-        boolean res1= CoursService.getCours().stream().anyMatch(curs-> curs.toString().equals(c.toString()));
-        boolean res2= sessionService.listSession().stream().anyMatch(sess-> sess.toString().equals(s.toString()));
+        boolean res1 = CoursService.getCours().stream().anyMatch(curs -> curs.toString().equals(c.toString()));
+        boolean res2 = sessionService.listSession().stream().anyMatch(sess -> sess.toString().equals(s.toString()));
         //test cNew contains sNew
-        boolean res3= true;
+        boolean res3 = true;
 
-        System.out.println(res1+"*****"+res2+"*****"+res3);
+        System.out.println(res1 + "***" + res2 + "***" + res3);
         //System.out.println(cNew.getSessions());
         //System.out.println(sNew.getCours());
 
         assertTrue(res1 && res2 && res3);
 
-        //CoursService.supprimerCours(c.getId());
+        CoursService.supprimerCours(c.getId());
 
-        //sessionService.supprimerSession(s.getId());
+        sessionService.supprimerSession(s.getId());
 
     }
 
     @Test
     public void exportTest() throws DocumentException, IOException {
-        HttpServletResponse response=new HttpServletResponse() {
+        HttpServletResponse response = new HttpServletResponse() {
             @Override
             public void addCookie(Cookie cookie) {
 
@@ -212,11 +210,6 @@ public class CoursTest {
             }
 
             @Override
-            public void setStatus(int i) {
-
-            }
-
-            @Override
             public void setStatus(int i, String s) {
 
             }
@@ -224,6 +217,11 @@ public class CoursTest {
             @Override
             public int getStatus() {
                 return 0;
+            }
+
+            @Override
+            public void setStatus(int i) {
+
             }
 
             @Override
@@ -247,8 +245,18 @@ public class CoursTest {
             }
 
             @Override
+            public void setCharacterEncoding(String s) {
+
+            }
+
+            @Override
             public String getContentType() {
                 return null;
+            }
+
+            @Override
+            public void setContentType(String s) {
+
             }
 
             @Override
@@ -262,11 +270,6 @@ public class CoursTest {
             }
 
             @Override
-            public void setCharacterEncoding(String s) {
-
-            }
-
-            @Override
             public void setContentLength(int i) {
 
             }
@@ -277,18 +280,13 @@ public class CoursTest {
             }
 
             @Override
-            public void setContentType(String s) {
-
+            public int getBufferSize() {
+                return 0;
             }
 
             @Override
             public void setBufferSize(int i) {
 
-            }
-
-            @Override
-            public int getBufferSize() {
-                return 0;
             }
 
             @Override
@@ -312,17 +310,17 @@ public class CoursTest {
             }
 
             @Override
-            public void setLocale(Locale locale) {
-
+            public Locale getLocale() {
+                return null;
             }
 
             @Override
-            public Locale getLocale() {
-                return null;
+            public void setLocale(Locale locale) {
+
             }
         };
         CoursService.export(response);
 
-assertTrue(true);
+        assertTrue(true);
     }
 }

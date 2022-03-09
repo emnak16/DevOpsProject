@@ -3,16 +3,17 @@ package com.esprit.examen.services;
 
 import com.esprit.examen.entities.Cours;
 import com.esprit.examen.entities.Formateur;
-
+import com.esprit.examen.entities.Session;
+import com.esprit.examen.exception.BadDataException;
+import com.esprit.examen.exception.NotFoundException;
 import com.esprit.examen.repositories.FormateurRepository;
+import com.esprit.examen.repositories.SessionRepository;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.esprit.examen.entities.Session;
-import com.esprit.examen.repositories.SessionRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.UnknownServiceException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,14 +51,14 @@ public class SessionService implements ISessionService{
 
 	@Override
 	@Transactional
-	public void affecterFormateurASession(Long formateurId, Long sessionId) {
+	public void affecterFormateurASession(Long formateurId, Long sessionId) throws BadDataException, UnknownServiceException {
 
 		Session s = sessionRepository.findById(sessionId)
-				.orElse(new Session());
-		Formateur f = formateurRepository.findById(formateurId).orElse(new Formateur());
+				.orElseThrow(UnknownServiceException::new);
+		Formateur f = formateurRepository.findById(formateurId).orElseThrow(UnknownServiceException::new);
 
 		if(f.getSessions() == null){
-			Set sessions = new HashSet<Session>();
+			Set<Session> sessions = new HashSet<>();
 			sessions.add(s);
 			f.setSessions(sessions);
 		}else{
@@ -78,25 +79,31 @@ public class SessionService implements ISessionService{
 	}
 
 	@Override
-	public Session findByIdSession( Long sessionId) {
-		return sessionRepository.findById(sessionId).get();
+	public Session findByIdSession( Long sessionId) throws NotFoundException {
+		return sessionRepository.findById(sessionId).orElseThrow(NotFoundException::new);
 	}
 
 	@Override
-	public Session findSessionByFormateur(Long formateurId) {
-		return listSession().stream().filter(session -> session.getFormateur().getId().equals(formateurId))
-				.findFirst()
-				.orElseGet(Session::new);
+	public Set<Session> findSessionByFormateur(Long formateurId) {
+
+
+		return sessionRepository.findSessionByFormateur(formateurId);
 	}
 
 	@Override
 	public void budgerSession(Long sessionId, Long salary) {
-		Session s = findByIdSession(sessionId);
-		Long nbCours = s.getCours().stream().count();
-		double unitPrice = s.getCours().stream().findFirst().get().getPrix();
-		s.setPrice((nbCours*unitPrice*s.getDuree())+salary);
+		try {
+			Session s = findByIdSession(sessionId);
+		double totalCoursPrice = s.getCours().stream().mapToDouble(Cours::getPrix).sum();
+		s.setPrice((totalCoursPrice*s.getDuree())+salary);
 		modifierSession(s);
+		}catch(Exception e){
+			log.severe(e.getMessage());
+			log.severe("couldnt find session with id : " + sessionId);
+
+		}
 	}
 
+	
 
 }

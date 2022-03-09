@@ -1,19 +1,15 @@
 package com.esprit.examen.controllers;
 
-import com.esprit.examen.entities.Cours;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.esprit.examen.dto.SessionModel;
 import com.esprit.examen.entities.Session;
+import com.esprit.examen.exception.BadDataException;
 import com.esprit.examen.services.ISessionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.net.UnknownServiceException;
+
 
 @RestController
 public class SessionRestController {
@@ -23,21 +19,23 @@ public class SessionRestController {
 	
 	@PostMapping("/ajouterSession")
 	@ResponseBody
-	public Session ajouterSession(@RequestBody Session session) {
+	public Session ajouterSession(@RequestBody SessionModel sessionModel) {
+		Session session = new Session(sessionModel);
 		sessionService.addSession(session);
 		return session;
 	}
 
 	@PutMapping("/modifierSession")
 	@ResponseBody
-	public Session modifierSession(@RequestBody Session session) {
-		sessionService.addSession(session);
+	public Session modifierSession(@RequestBody SessionModel sessionModel) {
+		Session session = new Session(sessionModel);
+		sessionService.modifierSession(session);
 		return session;
 	}
 	
 	@PutMapping("/affecterFormateurASession/{formateurId}/{sessionId}")
 	@ResponseBody
-	public String affecterFormateurASession(@PathVariable("formateurId")  Long formateurId, @PathVariable("sessionId") Long sessionId) {
+    public String affecterFormateurASession(@PathVariable("formateurId") Long formateurId, @PathVariable("sessionId") Long sessionId) throws BadDataException, UnknownServiceException {
 		sessionService.affecterFormateurASession(formateurId, sessionId);
 		return "formateur affecté correctement";
 	}

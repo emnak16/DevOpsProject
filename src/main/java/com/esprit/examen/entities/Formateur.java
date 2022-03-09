@@ -1,16 +1,19 @@
 package com.esprit.examen.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.esprit.examen.dto.FormateurModel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+
 @Entity
-@Getter
-@Setter
 public class Formateur implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -23,35 +26,16 @@ public class Formateur implements Serializable {
     @Enumerated(EnumType.STRING)
     private Contrat contrat;
     private String phone;
+    @Column(unique = true)
     private String email;
     private String password;
     private Boolean admin;
     @OneToMany(mappedBy = "formateur", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     private Set<Session> sessions;
 
-
-    public Formateur(Long id, String nom, String prenom, Poste poste, Contrat contrat, String phone, String email, String password) {
-        super();
-        this.id = id;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.poste = poste;
-        this.phone = phone;
-        this.contrat = contrat;
-        this.email = email;
-        this.password = password;
+    public Formateur(FormateurModel formateurModel) {
     }
 
-
-    public Formateur(String prenom, String nom, Poste poste, Contrat contrat, String email, String password) {
-        this.nom=nom;
-        this.prenom= prenom;
-        this.poste = poste;
-        this.contrat = contrat;
-        this.email = email;
-        this.password = password;
-
-    }
 
     @Override
     public String toString() {
@@ -78,9 +62,6 @@ public class Formateur implements Serializable {
     }
 
 
-    public Formateur() {
-        super();
-    }
 
 
 }

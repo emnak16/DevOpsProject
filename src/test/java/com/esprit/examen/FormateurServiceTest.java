@@ -1,6 +1,10 @@
 package com.esprit.examen;
 
+import com.esprit.examen.config.RegexTests;
 import com.esprit.examen.entities.*;
+import com.esprit.examen.exception.BadDataException;
+import com.esprit.examen.exception.LogInException;
+import com.esprit.examen.exception.NotFoundException;
 import com.esprit.examen.services.ICoursService;
 import com.esprit.examen.services.IFormateurService;
 import com.esprit.examen.services.ISessionService;
@@ -11,19 +15,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.Normalizer;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 
+@Rollback
 @SpringBootTest
 // we must delete the entity that we added right after the test is verified
 // rolling back transactions made on the database during the test
-@Rollback
 public class FormateurServiceTest {
 
     @Autowired
@@ -36,21 +39,25 @@ public class FormateurServiceTest {
     ICoursService coursService;
 
     @Test
-    public void addorEditFormateurTest() {
-        Formateur f = new Formateur("khouloud", "Ben Taoues", Poste.Ingénieur, Contrat.CDI, "97189195", "kbentaoues@vermeg.com", "Khouloud@123");
+    public void addorEditFormateurTest() throws BadDataException {
+        Formateur f = new Formateur("khouloud", "Ben Taoues", Poste.INGENIEUR, Contrat.CDI, "97189195", "kbentaoues@vermeg.com", "Khouloud@123");
         formateurService.addorEditFormateur(f);
-        boolean res = formateurService.listFormateurs().stream().anyMatch(formateur -> formateur.toString().equals(f.toString()));
-        assertTrue(res);
+        Formateur f2;
+        f2 = formateurService.listFormateurs().stream().filter(formateur -> formateur.toString().equals(f.toString())).findFirst().get();
+        assertNotNull(f2);
         f.setEmail("walid.besbes@gmail.com");
         formateurService.addorEditFormateur(f);
-        res = formateurService.listFormateurs().stream().anyMatch(formateur -> formateur.toString().equals(f.toString()));
-        assertTrue(res);
+        f2 = formateurService.listFormateurs().stream().filter(formateur -> formateur.toString().equals(f.toString())).findFirst().get();
+        assertNotNull(f2);
+
+        Formateur fEmail = new Formateur("khouloud", "Ben Taoues", Poste.INGENIEUR, Contrat.CDI, "97189195", "kh", "Khouloud@123");
+
     }
 
 
     @Test
-    public void supprimerFormateurTest() {
-        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI,"95131212", "wbesbes@vermeg.com", "Vermeg+123");
+    public void supprimerFormateurTest() throws BadDataException {
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
         formateurService.supprimerFormateur(f.getId());
         boolean res = formateurService.listFormateurs().stream().anyMatch(formateur -> formateur.toString().equals(f.toString()));
@@ -58,33 +65,87 @@ public class FormateurServiceTest {
     }
 
     @Test
-    public void nombreFormateursImpliquesDansUnCoursTest() {
+    public void findFormateurByIdTest() throws BadDataException, NotFoundException {
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
+        formateurService.addorEditFormateur(f);
+
+            Formateur f1= formateurService.findFormateurById(f.getId());
+            assertNotNull(f1);
+
+              formateurService.supprimerFormateur(f.getId());
+    }
+
+    @Test
+    public void findFormateurByNameTest () throws BadDataException {
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
+
+            formateurService.addorEditFormateur(f);
+
+        List<Formateur> listFormateurs = formateurService.findFormateurByName(f.getNom());
+
+        assertNotNull(listFormateurs);
+        formateurService.supprimerFormateur(f.getId());
+    }
+
+    @Test
+    public void findFormateurByLastNameTest () throws BadDataException {
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
+
+            formateurService.addorEditFormateur(f);
+
+
+        List<Formateur> listFormateurs = formateurService.findFormateurByLastName(f.getPrenom());
+
+        assertNotNull(listFormateurs);
+        formateurService.supprimerFormateur(f.getId());
+    }
+    @Test
+    public void nombreFormateursImpliquesDansUnCoursTest() throws Exception {
         Date date1 = null;
         Date date2 = null;
         date2 = new java.sql.Date(new Date().getTime());
         date1 = new java.sql.Date(new Date().getTime());
-        Set<Session> setS = new HashSet<Session>();
-        Set<Cours> setC = new HashSet<Cours>();
-        Cours c = new Cours("first course", TypeCours.Informatique, "cours", setS, 10);
-        coursService.addCours(c);
-        setC.add(c);
-        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI, "wbesbes@vermeg.com", "Vermeg+123");
+        Formateur f2;
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Khouloud@123");
         formateurService.addorEditFormateur(f);
-        Session s = new Session(date1, date2, 1L, "First session, month long", setC, f);
+        f2 = formateurService.listFormateurs().stream().filter(formateur -> formateur.toString().equals(f.toString())).findFirst().get();
+        Session s = new Session(date1, date2, 1L, "First session, month long");
         sessionService.addSession(s);
-        setS.add(s);
-        long nbFormateur = formateurService.nombreFormateursImpliquesDansUnCours(TypeCours.Informatique);
+        Session s2 = sessionService.listSession().stream().filter(session -> session.toString().equals(s.toString())).findFirst().get();
+        sessionService.affecterFormateurASession(f2.getId(), s2.getId());
+        Cours c = new Cours("first course", TypeCours.INFORMATIQUE, "cours", 10);
+        coursService.addCours(c);
+        Cours c2 = coursService.getCours().stream().filter(cours -> cours.toString().equals(c.toString())).findFirst().get();
+        coursService.affecterCoursASession(c2.getId(), s2.getId());
+        long nbFormateur = formateurService.nombreFormateursImpliquesDansUnCours(TypeCours.INFORMATIQUE);
         assertEquals(1L, nbFormateur);
+        sessionService.supprimerSession(s2.getId());
+        formateurService.supprimerFormateur(f2.getId());
+        coursService.supprimerCours(c2.getId());
     }
 
     @Test
-    public void listFormateurs() {
-        Formateur f = new Formateur("walid", "besbes", Poste.Ingénieur, Contrat.CDI,"95131212", "wbesbes@vermeg.com", "Vermeg+123");
+    public void listFormateurs() throws BadDataException {
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
         List <Formateur> formateurList= formateurService.listFormateurs();
         assertNotEquals(formateurList.size(), 0);
+        formateurService.supprimerFormateur(f.getId());
 
     }
 
+    @Test
+    public void login() throws BadDataException, LogInException {
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
+        formateurService.addorEditFormateur(f);
+
+        int res = formateurService.logIn(f.getEmail(), "Vermeg+123");
+        assertEquals(1, res);
+        res = formateurService.logIn(f.getEmail(), "kh");
+        assertNotEquals(1, res);
+        formateurService.supprimerFormateur(f.getId());
+
+
+    }
 
 }

@@ -1,14 +1,12 @@
 package com.esprit.examen.entities;
 
+import com.esprit.examen.dto.CoursModel;
 import lombok.Getter;
 import lombok.Setter;
 
-
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,11 +21,19 @@ public class Cours implements Serializable {
 	private TypeCours typeCours;
 	private String intitule;
 	@ManyToMany(mappedBy="cours",fetch = FetchType.EAGER)
-	private Set<Session> sessions=new HashSet<>();
+	private Set<Session> sessions;
 
 	private double prix;
 
+	public Cours(CoursModel coursModel) {
+	}
 
+	public Cours(String description, TypeCours typeCours, String intitule, double prix) {
+		this.description = description;
+		this.intitule = intitule;
+		this.typeCours = typeCours;
+		this.prix = prix;
+	}
 
 
 	public Long getId() {
@@ -74,7 +80,7 @@ public class Cours implements Serializable {
 	@Override
 	public String toString() {
 		return "Cours [id=" + id + ", description=" + description + ", typeCours=" + typeCours + ", intitule="
-				+ intitule + ", description=" +prix +"]";
+				+ intitule + ", description=" +prix + "]";
 	}
 
 
@@ -88,16 +94,16 @@ public class Cours implements Serializable {
 	}
 
 
-	public Cours(String description, TypeCours typeCours, String intitule, double prix) {
+	public Cours(String description, TypeCours typeCours, String intitule, double prix, Set<Session> sessions) {
 		this.description = description;
 		this.typeCours = typeCours;
 		this.intitule = intitule;
+		this.sessions = sessions;
 		this.prix = prix;
 	}
 
 	public Cours() {
 		super();
-
 	}
 	
 	

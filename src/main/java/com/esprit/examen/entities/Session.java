@@ -1,15 +1,13 @@
 package com.esprit.examen.entities;
 
+import com.esprit.examen.dto.SessionModel;
 import lombok.Getter;
 import lombok.Setter;
 
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.*;
 
 @Entity
 @Getter
@@ -25,13 +23,16 @@ public class Session implements Serializable{
 	private Date dateFin;
 	private Long duree;
 	private String description;
-	@ManyToOne
-    Formateur formateur;
+	@ManyToOne()
+	private Formateur formateur;
 	@ManyToMany(fetch = FetchType.EAGER)
-	Set<Cours> cours=new HashSet<Cours>();
+	private Set<Cours> cours;
 	private Double price;
 
 	private Long salaireF;
+
+	public Session(SessionModel sessionModel) {
+	}
 
 	public Long getId() {
 		return id;
@@ -77,8 +78,8 @@ public class Session implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "Session [id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", duree=" + duree
-				+ ", description=" + description +"]";
+		return "Session [ dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", duree=" + duree
+				+ ", description=" + description + "]";
 	}
 	public Session(Long id, Date dateDebut, Date dateFin, Long duree, String description) {
 		super();
@@ -144,9 +145,9 @@ public class Session implements Serializable{
 		this.description = description;
 	}
 
+
 	public Session() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	
