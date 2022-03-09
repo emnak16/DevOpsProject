@@ -98,11 +98,5 @@ public class SessionService implements ISessionService{
 		modifierSession(s);
 	}
 
-	@Override
-	public List<Session> retreiveSessionsByCoursID(Cours cours)
-	{
-		return sessionRepository.retreiveSessionsByCoursID(cours);
-
-	}
 
 }

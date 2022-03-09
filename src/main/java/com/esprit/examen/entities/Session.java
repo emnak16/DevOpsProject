@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -27,7 +28,7 @@ public class Session implements Serializable{
 	@ManyToOne
     Formateur formateur;
 	@ManyToMany(fetch = FetchType.EAGER)
-	Set<Cours> cours;
+	Set<Cours> cours=new HashSet<Cours>();
 	private Double price;
 
 	private Long salaireF;
@@ -77,7 +78,7 @@ public class Session implements Serializable{
 	@Override
 	public String toString() {
 		return "Session [id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", duree=" + duree
-				+ ", description=" + description + "]";
+				+ ", description=" + description +"]";
 	}
 	public Session(Long id, Date dateDebut, Date dateFin, Long duree, String description) {
 		super();

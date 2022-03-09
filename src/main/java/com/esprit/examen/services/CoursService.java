@@ -8,7 +8,6 @@ import com.lowagie.text.pdf.PdfWriter;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 import com.esprit.examen.entities.Session;
@@ -16,11 +15,8 @@ import com.esprit.examen.repositories.SessionRepository;
 import lombok.extern.java.Log;
 import com.esprit.examen.entities.Cours;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.esprit.examen.repositories.CoursRepository;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Service
 @Log
@@ -69,25 +65,37 @@ public class CoursService implements ICoursService {
 	}
 
     @Override
-	public Cours findcoursById(Long coursId)
-	{Cours c = coursRepository.findById(coursId).get();
+	public Cours findcoursById(Long coursId) throws Exception
+	{Cours c = coursRepository.findById(coursId).orElseThrow(Exception::new);
 		log.info("extracted course with information: "+ c.toString());
 		return c;}
 
 
 
 	@Override
-	public void affecterCoursASession(Long coursId, Long sessionId)
-	{   Cours c = coursRepository.findById(coursId).get();
+	public void affecterCoursASession(Long coursId, Long sessionId) throws Exception {   Cours c = findcoursById(coursId);
+		log.info(c+"affecterCoursASession C");
+
 		Session s = sessionService.findByIdSession(sessionId);
-		Set<Session> set = new HashSet<>();
+		log.info(s+"affecterCoursASession S");
+
+		Set<Session> set = c.getSessions();
 		set.add(s);
+
 		c.setSessions(set);
-		coursRepository.save(c);
+		Set<Cours> setC=s.getCours();
+		setC.add(c);
+		s.setCours(setC);
+
+		log.info(c+"cours");
+		log.info(s+"session");
+
+
+
+		modifierCours(c);
+		sessionService.modifierSession(s);
+
 		log.info("added sessions"+ c.toString());
-
-
-
 	}
 
 	public void export(HttpServletResponse response) throws IOException, DocumentException {
@@ -99,27 +107,18 @@ public class CoursService implements ICoursService {
 		fontTitle.setSize(18);
 
 		Paragraph paragraph = new Paragraph("This is a title.", fontTitle);
-		paragraph.setAlignment(Paragraph.ALIGN_CENTER);
 
 		Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
 		fontParagraph.setSize(12);
 
 		Paragraph paragraph2 = new Paragraph("This is a paragraph.", fontParagraph);
-		paragraph2.setAlignment(Paragraph.ALIGN_LEFT);
 
 		document.add(paragraph);
 		document.add(paragraph2);
-		document.close();
 	}
 
 
-	public List<Session> retrieveHistory(Long coursId)
 
-	{
-		List<Session> l= new ArrayList<>();
-		return l;
-
-	}
 
 
 }

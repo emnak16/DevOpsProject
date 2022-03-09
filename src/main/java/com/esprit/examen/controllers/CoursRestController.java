@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -58,7 +56,7 @@ public List<Cours> listeCours() {
 
 	@GetMapping("/getCoursById/{coursId}")
 	@ResponseBody
-	public Cours getCoursByID(@PathVariable("coursId") Long coursId) {
+	public Cours getCoursByID(@PathVariable("coursId") Long coursId) throws Exception {
 
 		return  coursService.findcoursById(coursId);
 	}
@@ -66,7 +64,7 @@ public List<Cours> listeCours() {
 
 @PutMapping("/affecterCoursASession/{coursId}/{sessionId}")
 @ResponseBody
-public String affecterFormateurASession(@PathVariable("coursId")  Long coursId, @PathVariable("sessionId") Long sessionId) {
+public String affecterFormateurASession(@PathVariable("coursId")  Long coursId, @PathVariable("sessionId") Long sessionId) throws Exception {
 	coursService.affecterCoursASession(coursId, sessionId);
 	return "cours affecté correctement";
 }

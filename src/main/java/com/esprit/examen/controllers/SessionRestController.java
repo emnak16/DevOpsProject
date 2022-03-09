@@ -48,9 +48,5 @@ public class SessionRestController {
 		sessionService.supprimerSession(sessionId);
 	}
 
-	@PostMapping("/retreiveSessions")
-	@ResponseBody
-	public List<Session> retreiveSessions(@RequestBody Cours cours) {
-		return sessionService.retreiveSessionsByCoursID(cours);
-	}
+
 }

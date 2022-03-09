@@ -21,13 +21,13 @@ import static org.junit.Assert.*;
 @SpringBootTest
 @Log
 public class SessionTest {
-
+    @Autowired
+    ICoursService coursService;
     @Autowired
     ISessionService sessionService;
     @Autowired
     IFormateurService formateurService;
-    @Autowired
-    ICoursService coursService;
+
 
     @Test
     public void ajouterSessionTest(){
@@ -42,6 +42,9 @@ public class SessionTest {
         boolean added = sessionService.listSession().stream().anyMatch(session -> session.toString().equals(s.toString()));
         assertTrue(added);
     }
+
+
+
 
     @Test
     public void modifierSessionTest(){

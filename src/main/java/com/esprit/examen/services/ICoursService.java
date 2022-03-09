@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.esprit.examen.entities.Cours;
-import com.esprit.examen.entities.Session;
 import com.lowagie.text.DocumentException;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,11 +17,9 @@ public interface ICoursService {
 
 	List<Cours> getCours();
 
-	List<Session> retrieveHistory(Long coursId);
+	Cours findcoursById(Long coursId) throws Exception;
 
-	Cours findcoursById(Long coursId);
-
-	void affecterCoursASession(Long coursId, Long sessionId);
+	void affecterCoursASession(Long coursId, Long sessionId) throws Exception;
 
 	 void export(HttpServletResponse response) throws IOException, DocumentException;
 

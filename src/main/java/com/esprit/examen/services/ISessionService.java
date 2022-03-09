@@ -23,7 +23,6 @@ public interface ISessionService {
 
 	void budgerSession(Long sessionId, Long salary);
 
-	List<Session> retreiveSessionsByCoursID(Cours cours);
 
 
 }
