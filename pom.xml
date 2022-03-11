@@ -8,7 +8,7 @@
 		<version>2.4.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>tn.esprit.spring</groupId>
+	<groupId>com.esprit.examen</groupId>
 	<artifactId>spring-boot-data-jpa-entity</artifactId>
 	<version>0.0.1</version>
 	<name>spring-boot-data-jpa-entity</name>
