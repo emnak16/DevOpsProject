@@ -1,6 +1,5 @@
 package com.esprit.examen;
 
-import com.esprit.examen.config.RegexTests;
 import com.esprit.examen.entities.*;
 import com.esprit.examen.exception.BadDataException;
 import com.esprit.examen.exception.LogInException;
@@ -15,11 +14,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.text.Normalizer;
+import com.esprit.examen.exception.LogInException;
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
 
@@ -49,8 +49,6 @@ public class FormateurServiceTest {
         formateurService.addorEditFormateur(f);
         f2 = formateurService.listFormateurs().stream().filter(formateur -> formateur.toString().equals(f.toString())).findFirst().get();
         assertNotNull(f2);
-
-        Formateur fEmail = new Formateur("khouloud", "Ben Taoues", Poste.INGENIEUR, Contrat.CDI, "97189195", "kh", "Khouloud@123");
 
     }
 
@@ -125,7 +123,7 @@ public class FormateurServiceTest {
     }
 
     @Test
-    public void listFormateurs() throws BadDataException {
+    public void listFormateursTest() throws BadDataException {
         Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
         List <Formateur> formateurList= formateurService.listFormateurs();
@@ -134,18 +132,61 @@ public class FormateurServiceTest {
 
     }
 
-    @Test
-    public void login() throws BadDataException, LogInException {
-        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
-        formateurService.addorEditFormateur(f);
 
-        int res = formateurService.logIn(f.getEmail(), "Vermeg+123");
-        assertEquals(1, res);
-        res = formateurService.logIn(f.getEmail(), "kh");
-        assertNotEquals(1, res);
-        formateurService.supprimerFormateur(f.getId());
+
+
+    @Test
+    public void addOrEditWrongEmailTest() {
+
+        Formateur ftest2 = new Formateur();
+
+        ftest2.setPrenom("Ben Taoues");
+        ftest2.setNom("Khouloud");
+        ftest2.setPoste(Poste.INGENIEUR);
+        ftest2.setContrat(Contrat.CDI);
+        ftest2.setPhone("97189195");
+        ftest2.setPassword("Khouloud@123");
+          Exception exception = assertThrows(BadDataException.class, () -> {
+            formateurService.addorEditFormateur(ftest2);
+        });
+
+        String expectedMessage = "email wrong format";
+         String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+
+    @Test
+    public void addOrEditWrongPhoneTest() {
+        Formateur fPhone= new Formateur("khouloud", "Ben Taoues", Poste.INGENIEUR, Contrat.CDI, "b3", "kbentaoues@vermeg.com", "Khouloud@123");
+
+       Exception exception = assertThrows(BadDataException.class, () -> {
+            formateurService.addorEditFormateur(fPhone);
+        });
+
+        String expectedMessage = "Phone number  wrong format";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
 
 
     }
+    @Test
+    public void addOrEditWrongPasswordTest() {
+        Formateur fpassword= new Formateur();
+        fpassword.setPrenom("Ben Taoues");
+        fpassword.setNom("Khouloud");
+        fpassword.setPoste(Poste.INGENIEUR);
+        fpassword.setContrat(Contrat.CDI);
+        fpassword.setPhone("97189195");
+        fpassword.setEmail("khouloud.bentaoues33@gmail.com");
+
+       Exception exception=assertThrows(BadDataException.class, () -> {
+            formateurService.addorEditFormateur(fpassword);
+        });
+        String expectedMessage = "Password wrong format";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+   }
 
 }

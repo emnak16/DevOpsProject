@@ -31,7 +31,7 @@ public class FormateurService implements IFormateurService {
     @Override
     public Long addorEditFormateur(Formateur formateur) throws BadDataException {
 
-        if (formateur.getEmail() != null && Boolean.FALSE.equals(RegexTests.isValidMail(formateur.getEmail()))) {
+        if (formateur.getEmail() == null || Boolean.FALSE.equals(RegexTests.isValidMail(formateur.getEmail()))) {
                 {
                 log.severe("email wrong format");
 
@@ -113,20 +113,6 @@ public class FormateurService implements IFormateurService {
 
     }
 
-    @Override
-    public int logIn(String email, String password) throws LogInException {
-        try {
-            Formateur f = findFormateurByEmail(email);
-            if (passwordEncoder.matches(password, f.getPassword()))
-                return 1;
-            else
-                return -1;
-        } catch (NotFoundException e) {
-            throw new LogInException("No user found with these credentials");
-
-        }
-
-    }
 
     @Override
     public Formateur findFormateurByEmail(String email) throws NotFoundException {
@@ -139,7 +125,6 @@ public class FormateurService implements IFormateurService {
         return f;
 
     }
-
 
     @Bean
     public BCryptPasswordEncoder encoder() {

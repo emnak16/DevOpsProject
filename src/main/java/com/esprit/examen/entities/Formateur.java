@@ -36,6 +36,33 @@ public class Formateur implements Serializable {
     public Formateur(FormateurModel formateurModel) {
     }
 
+    public Formateur(String preom, Poste poste, Contrat contrat, String phone, String email, String password) {
+
+        this.prenom=nom;
+        this.poste=poste;
+        this.contrat=contrat;
+        this.phone=phone;
+        this.email=email;
+        this.password=password;
+    }
+
+    public Formateur(String nom, Poste poste, Contrat contrat, String phone, String password) {
+
+        this.nom=nom;
+        this.poste=poste;
+        this.contrat=contrat;
+        this.phone=phone;
+        this.password=password;
+    }
+
+
+
+    public Formateur(String nom, String prenom, Poste poste, Contrat contrat, String phone, String password) {
+    this.nom=nom;
+    this.password=password;
+    this.phone=phone;
+    this.contrat=contrat;
+    }
 
     @Override
     public String toString() {
