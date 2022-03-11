@@ -7,7 +7,6 @@ import com.esprit.examen.exception.BadDataException;
 import com.esprit.examen.exception.LogInException;
 import com.esprit.examen.exception.NotFoundException;
 import com.esprit.examen.services.IFormateurService;
-import com.esprit.examen.services.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +20,6 @@ public class FormateurRestController {
 
     @Autowired
     IFormateurService formateurService;
-
-
-    @Autowired
-    LoginService loginService;
 
     @PostMapping("/addOrEditFormateur")
     @ResponseBody
@@ -44,7 +39,7 @@ public class FormateurRestController {
     public ResponseEntity<Integer> login(@RequestBody String email, String password) {
         int res = 1;
         try {
-            loginService.logIn(email, password);
+            formateurService.logIn(email, password);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (LogInException e) {
             res = -1;

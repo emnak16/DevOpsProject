@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.esprit.examen.exception.LogInException;
 import java.util.Date;
 import java.util.List;
 
@@ -67,17 +66,17 @@ public class FormateurServiceTest {
         Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
 
-            Formateur f1= formateurService.findFormateurById(f.getId());
-            assertNotNull(f1);
+        Formateur f1 = formateurService.findFormateurById(f.getId());
+        assertNotNull(f1);
 
-              formateurService.supprimerFormateur(f.getId());
+        formateurService.supprimerFormateur(f.getId());
     }
 
     @Test
-    public void findFormateurByNameTest () throws BadDataException {
+    public void findFormateurByNameTest() throws BadDataException {
         Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
 
-            formateurService.addorEditFormateur(f);
+        formateurService.addorEditFormateur(f);
 
         List<Formateur> listFormateurs = formateurService.findFormateurByName(f.getNom());
 
@@ -86,10 +85,10 @@ public class FormateurServiceTest {
     }
 
     @Test
-    public void findFormateurByLastNameTest () throws BadDataException {
+    public void findFormateurByLastNameTest() throws BadDataException {
         Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
 
-            formateurService.addorEditFormateur(f);
+        formateurService.addorEditFormateur(f);
 
 
         List<Formateur> listFormateurs = formateurService.findFormateurByLastName(f.getPrenom());
@@ -97,6 +96,7 @@ public class FormateurServiceTest {
         assertNotNull(listFormateurs);
         formateurService.supprimerFormateur(f.getId());
     }
+
     @Test
     public void nombreFormateursImpliquesDansUnCoursTest() throws Exception {
         Date date1 = null;
@@ -126,13 +126,11 @@ public class FormateurServiceTest {
     public void listFormateursTest() throws BadDataException {
         Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
-        List <Formateur> formateurList= formateurService.listFormateurs();
+        List<Formateur> formateurList = formateurService.listFormateurs();
         assertNotEquals(formateurList.size(), 0);
         formateurService.supprimerFormateur(f.getId());
 
     }
-
-
 
 
     @Test
@@ -146,12 +144,12 @@ public class FormateurServiceTest {
         ftest2.setContrat(Contrat.CDI);
         ftest2.setPhone("97189195");
         ftest2.setPassword("Khouloud@123");
-          Exception exception = assertThrows(BadDataException.class, () -> {
+        Exception exception = assertThrows(BadDataException.class, () -> {
             formateurService.addorEditFormateur(ftest2);
         });
 
         String expectedMessage = "email wrong format";
-         String actualMessage = exception.getMessage();
+        String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
     }
@@ -159,9 +157,9 @@ public class FormateurServiceTest {
 
     @Test
     public void addOrEditWrongPhoneTest() {
-        Formateur fPhone= new Formateur("khouloud", "Ben Taoues", Poste.INGENIEUR, Contrat.CDI, "b3", "kbentaoues@vermeg.com", "Khouloud@123");
+        Formateur fPhone = new Formateur("khouloud", "Ben Taoues", Poste.INGENIEUR, Contrat.CDI, "b3", "kbentaoues@vermeg.com", "Khouloud@123");
 
-       Exception exception = assertThrows(BadDataException.class, () -> {
+        Exception exception = assertThrows(BadDataException.class, () -> {
             formateurService.addorEditFormateur(fPhone);
         });
 
@@ -171,9 +169,10 @@ public class FormateurServiceTest {
 
 
     }
+
     @Test
     public void addOrEditWrongPasswordTest() {
-        Formateur fpassword= new Formateur();
+        Formateur fpassword = new Formateur();
         fpassword.setPrenom("Ben Taoues");
         fpassword.setNom("Khouloud");
         fpassword.setPoste(Poste.INGENIEUR);
@@ -181,12 +180,26 @@ public class FormateurServiceTest {
         fpassword.setPhone("97189195");
         fpassword.setEmail("khouloud.bentaoues33@gmail.com");
 
-       Exception exception=assertThrows(BadDataException.class, () -> {
+        Exception exception = assertThrows(BadDataException.class, () -> {
             formateurService.addorEditFormateur(fpassword);
         });
         String expectedMessage = "Password wrong format";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
-   }
+    }
+
+
+    @Test
+    public void loginTest() throws BadDataException, LogInException {
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
+        formateurService.addorEditFormateur(f);
+
+        int res = formateurService.logIn(f.getEmail(), "Vermeg+123");
+        assertEquals(1, res);
+        res = formateurService.logIn(f.getEmail(), "kh");
+        assertNotEquals(1, res);
+        formateurService.supprimerFormateur(f.getId());
+    }
+
 
 }

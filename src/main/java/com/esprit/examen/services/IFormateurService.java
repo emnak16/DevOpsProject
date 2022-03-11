@@ -24,5 +24,8 @@ public interface IFormateurService {
 
 	List<Formateur> findFormateurByLastName(String prenom);
 
-    Formateur findFormateurByEmail(String email) throws NotFoundException;
+
+	int logIn(String email, String password) throws LogInException;
+
+	Formateur findFormateurByEmail(String email) throws NotFoundException;
 }
