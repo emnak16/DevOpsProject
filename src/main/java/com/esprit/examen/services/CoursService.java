@@ -112,12 +112,12 @@ public class CoursService implements ICoursService {
 		Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		fontTitle.setSize(18);
 
-		Paragraph paragraph = new Paragraph("This in  title.", fontTitle);
+		Paragraph paragraph = new Paragraph("  title.", fontTitle);
 
 		Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
 		fontParagraph.setSize(12);
 
-		Paragraph paragraph2 = new Paragraph("This in  paragraph.", fontParagraph);
+		Paragraph paragraph2 = new Paragraph("  paragraph.", fontParagraph);
 
 		document.add(paragraph);
 		document.add(paragraph2);
