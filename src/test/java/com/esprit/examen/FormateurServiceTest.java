@@ -89,7 +89,7 @@ public class FormateurServiceTest {
     public void listFormateurs() throws BadDataException {
         Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
         formateurService.addorEditFormateur(f);
-        List <Formateur> formateurList= formateurService.listFormateurs();
+        List<Formateur> formateurList = formateurService.listFormateurs();
         assertNotEquals(formateurList.size(), 0);
         formateurService.supprimerFormateur(f.getId());
 

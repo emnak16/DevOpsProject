@@ -174,4 +174,11 @@ public class SessionTest {
         coursService.supprimerCours(c.getId());
         coursService.supprimerCours(c1.getId());
     }
+
+
+    @Test
+    public void findSessionById()
+    {
+
+    }
 }

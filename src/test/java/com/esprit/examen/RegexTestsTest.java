@@ -25,6 +25,7 @@ public class RegexTestsTest {
         assertFalse(RegexTests.isValidPassword("KHOULOUD@123"));//only upperCase letters
         assertFalse(RegexTests.isValidPassword("Khouloud123"));//no special caracters
         assertFalse(RegexTests.isValidPassword("kho"));// length <8
+        assertFalse(RegexTests.isValidPassword(""));
 
     }
 
@@ -33,6 +34,8 @@ public class RegexTestsTest {
         assertTrue(RegexTests.isAvalidPhone("97189195")); //compliant
         assertFalse(RegexTests.isAvalidPhone("a1235678")); //contain letter
         assertFalse(RegexTests.isAvalidPhone("kh@12364"));
+        assertFalse(RegexTests.isAvalidPhone(""));
+
 
     }
 
@@ -41,6 +44,8 @@ public class RegexTestsTest {
         assertTrue(RegexTests.isValidMail("khouloud.bentaoues33@gmail.com")); //compliant
         assertFalse(RegexTests.isValidMail("hk.at"));
         assertFalse(RegexTests.isValidMail("123@"));
+        assertFalse(RegexTests.isValidMail(""));
+
 
 
     }
@@ -50,5 +55,7 @@ public class RegexTestsTest {
         assertTrue(RegexTests.isValidName("khouloud ben taoues"));
         assertFalse(RegexTests.isValidName("123")); //contains numbers
         assertFalse(RegexTests.isValidName("khouloud.kh")); //contains special characters
+        assertFalse(RegexTests.isValidName(""));
+
     }
 }
