@@ -92,7 +92,7 @@ public class CoursTest {
     }
 
 
-    /*@Test
+    @Test
     public void affecterCoursASessionTest() throws Exception {
         Cours c = new Cours("Dev Web- full-stack", TypeCours.INFORMATIQUE, "dev web!!!", 20);
         CoursService.addCours(c);
@@ -125,7 +125,7 @@ public class CoursTest {
 
         sessionService.supprimerSession(s.getId());
 
-    }*/
+    }
 
     @Test
     public void exportTest() throws DocumentException, IOException {

@@ -94,9 +94,9 @@ public class SessionService implements ISessionService{
 	public void budgerSession(Long sessionId, Long salary) {
 		try {
 			Session s = findByIdSession(sessionId);
-		double totalCoursPrice = s.getCours().stream().mapToDouble(Cours::getPrix).sum();
-		s.setPrice((totalCoursPrice*s.getDuree())+salary);
-		modifierSession(s);
+			double totalCoursPrice = s.getCours().stream().mapToDouble(Cours::getPrix).sum();
+			s.setPrice((totalCoursPrice*s.getDuree())+salary);
+			modifierSession(s);
 		}catch(Exception e){
 			log.severe(e.getMessage());
 			log.severe("couldnt find session with id : " + sessionId);
@@ -104,6 +104,6 @@ public class SessionService implements ISessionService{
 		}
 	}
 
-	
+
 
 }
