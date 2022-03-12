@@ -92,7 +92,7 @@ public class CoursTest {
     }
 
 
-    @Test
+    /*@Test
     public void affecterCoursASessionTest() throws Exception {
         Cours c = new Cours("Dev Web- full-stack", TypeCours.INFORMATIQUE, "dev web!!!", 20);
         CoursService.addCours(c);
@@ -110,10 +110,6 @@ public class CoursTest {
         log.info(s + "Session");
         log.info(c + "Cours");
 
-
-        Cours cNew = CoursService.findcoursById(c.getId());
-        Session sNew = sessionService.findByIdSession(s.getId());
-
         boolean res1 = CoursService.getCours().stream().anyMatch(curs -> curs.toString().equals(c.toString()));
         boolean res2 = sessionService.listSession().stream().anyMatch(sess -> sess.toString().equals(s.toString()));
         //test cNew contains sNew
@@ -129,7 +125,7 @@ public class CoursTest {
 
         sessionService.supprimerSession(s.getId());
 
-    }
+    }*/
 
     @Test
     public void exportTest() throws DocumentException, IOException {
