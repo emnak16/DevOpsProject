@@ -1,10 +1,8 @@
 package com.esprit.examen;
 
-import com.esprit.examen.config.RegexTests;
 import com.esprit.examen.entities.*;
 import com.esprit.examen.exception.BadDataException;
 import com.esprit.examen.exception.LogInException;
-import com.esprit.examen.exception.NotFoundException;
 import com.esprit.examen.services.ICoursService;
 import com.esprit.examen.services.IFormateurService;
 import com.esprit.examen.services.ISessionService;
@@ -15,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.text.Normalizer;
 import java.util.Date;
 import java.util.List;
 
@@ -44,14 +41,13 @@ public class FormateurServiceTest {
         formateurService.addorEditFormateur(f);
         Formateur f2;
         f2 = formateurService.listFormateurs().stream().filter(formateur -> formateur.toString().equals(f.toString())).findFirst().get();
+
         assertNotNull(f2);
         f.setEmail("walid.besbes@gmail.com");
         formateurService.addorEditFormateur(f);
         f2 = formateurService.listFormateurs().stream().filter(formateur -> formateur.toString().equals(f.toString())).findFirst().get();
         assertNotNull(f2);
-
-        Formateur fEmail = new Formateur("khouloud", "Ben Taoues", Poste.INGENIEUR, Contrat.CDI, "97189195", "kh", "Khouloud@123");
-
+        formateurService.supprimerFormateur(f2.getId());
     }
 
 
@@ -64,41 +60,6 @@ public class FormateurServiceTest {
         assertFalse(res);
     }
 
-    @Test
-    public void findFormateurByIdTest() throws BadDataException, NotFoundException {
-        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
-        formateurService.addorEditFormateur(f);
-
-        Formateur f1= formateurService.findFormateurById(f.getId());
-        assertNotNull(f1);
-
-        formateurService.supprimerFormateur(f.getId());
-    }
-
-    @Test
-    public void findFormateurByNameTest () throws BadDataException {
-        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
-
-        formateurService.addorEditFormateur(f);
-
-        List<Formateur> listFormateurs = formateurService.findFormateurByName(f.getNom());
-
-        assertNotNull(listFormateurs);
-        formateurService.supprimerFormateur(f.getId());
-    }
-
-    @Test
-    public void findFormateurByLastNameTest () throws BadDataException {
-        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "95131212", "wbesbes@vermeg.com", "Vermeg+123");
-
-        formateurService.addorEditFormateur(f);
-
-
-        List<Formateur> listFormateurs = formateurService.findFormateurByLastName(f.getPrenom());
-
-        assertNotNull(listFormateurs);
-        formateurService.supprimerFormateur(f.getId());
-    }
     @Test
     public void nombreFormateursImpliquesDansUnCoursTest() throws Exception {
         Date date1 = null;
