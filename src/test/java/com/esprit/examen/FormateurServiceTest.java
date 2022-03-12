@@ -73,7 +73,7 @@ public class FormateurServiceTest {
         sessionService.affecterFormateurASession(f.getId(), s.getId());
         Cours c = new Cours("first course", TypeCours.INFORMATIQUE, "cours", 10);
         coursService.addCours(c);
-        coursService.affecterCoursASession(c.getId(), f.getId());
+        coursService.affecterCoursASession(c.getId(), s.getId());
         long nbFormateur = formateurService.nombreFormateursImpliquesDansUnCours(TypeCours.INFORMATIQUE);
         //assertEquals(1L, nbFormateur);
         sessionService.supprimerSession(s.getId());
