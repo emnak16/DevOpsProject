@@ -20,7 +20,7 @@ public class Cours implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private TypeCours typeCours;
 	private String intitule;
-	@ManyToMany(mappedBy="cours",fetch = FetchType.EAGER)
+	@ManyToMany(mappedBy="cours",fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	private Set<Session> sessions;
 
 	private double prix;
