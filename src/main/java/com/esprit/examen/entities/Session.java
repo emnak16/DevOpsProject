@@ -25,7 +25,7 @@ public class Session implements Serializable{
 	private String description;
 	@ManyToOne()
 	private Formateur formateur;
-	@ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Cours> cours;
 	private Double price;
 
