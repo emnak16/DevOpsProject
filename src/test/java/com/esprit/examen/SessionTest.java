@@ -111,12 +111,8 @@ public class SessionTest {
         formateurService.addorEditFormateur(f);
         Session s = new Session(date1, date2, 1L, "First session, month long");
         sessionService.addSession(s);
-
-        long i = f.getId();
-        Formateur f1 = formateurService.findFormateurByEmail(f.getEmail());
-        Session sk = sessionService.listSession().stream().filter(sh -> sh.toString().equals(s.toString())).findFirst().get();
-        sessionService.affecterFormateurASession(f1.getId(), sk.getId());
-        Session s2 = sessionService.findSessionByFormateur(f1.getId()).stream().filter(sess -> sess.getId() == s.getId()).findFirst().get();
+        sessionService.affecterFormateurASession(f.getId(), s.getId());
+        Session s2 = sessionService.findSessionByFormateur(f.getId()).stream().filter(sess -> sess.getId() == s.getId()).findFirst().get();
         assertNotNull(s2);
         sessionService.supprimerSession(s.getId());
         formateurService.supprimerFormateur(f.getId());
