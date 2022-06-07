@@ -11,8 +11,8 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +25,8 @@ public class FormateurService implements IFormateurService {
     @Autowired
     FormateurRepository formateurRepository;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+   // @Autowired
+    //PasswordEncoder passwordEncoder;
 
     @Override
     public Long addorEditFormateur(Formateur formateur) throws BadDataException {
@@ -45,11 +45,11 @@ public class FormateurService implements IFormateurService {
 
                 throw new BadDataException("Name wrong format" + formateur.getNom());
             }
-        } else if (formateur.getPassword() == null || Boolean.FALSE.equals(RegexTests.isValidPassword(formateur.getPassword()))) {
+        /*} else if (formateur.getPassword() == null || Boolean.FALSE.equals(RegexTests.isValidPassword(formateur.getPassword()))) {
             {
                 log.severe("Password wrong format");
                 throw new BadDataException("Password wrong format" + formateur.getNom());
-            }
+            }*/
         } else if (formateur.getPhone() != null && Boolean.FALSE.equals(RegexTests.isAvalidPhone(formateur.getPhone()))) {
             {
                 log.severe("Phone number  wrong format");
@@ -57,7 +57,7 @@ public class FormateurService implements IFormateurService {
             }
 
         } else {
-            formateur.setPassword(passwordEncoder.encode(formateur.getPassword()));
+            //formateur.setPassword(passwordEncoder.encode(formateur.getPassword()));
             formateurRepository.save(formateur);
             log.info("added Trainer with information " + formateur.toString());
             return 1l;
@@ -114,7 +114,7 @@ public class FormateurService implements IFormateurService {
 
     }
 
-    @Override
+    /*@Override
     public int logIn(String email, String password) throws LogInException {
         try {
             Formateur f = findFormateurByEmail(email);
@@ -127,7 +127,7 @@ public class FormateurService implements IFormateurService {
 
         }
 
-    }
+    }*/
 
     @Override
     public Formateur findFormateurByEmail(String email) throws NotFoundException {
@@ -142,10 +142,10 @@ public class FormateurService implements IFormateurService {
     }
 
 
-    @Bean
+   /*@Bean
     public BCryptPasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
-    }
+    }*/
 
 
 }

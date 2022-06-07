@@ -33,7 +33,7 @@ public class FormateurRestController {
         }
     }
 
-
+/*
     @GetMapping("/logIn")
     @ResponseBody
     public ResponseEntity<Integer> login(@RequestBody String email, String password) {
@@ -46,7 +46,7 @@ public class FormateurRestController {
             return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
 
         }
-    }
+    }*/
     @DeleteMapping("/supprimerFormateur/{formateurId}")
     @ResponseBody
     public ResponseEntity<String> supprimerFormateur(@PathVariable("formateurId") Long formateurId) {

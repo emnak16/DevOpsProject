@@ -27,7 +27,6 @@ public class Formateur implements Serializable {
     private Contrat contrat;
     private String phone;
     private String email;
-    private String password;
     private Boolean admin;
     @OneToMany(mappedBy = "formateur", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     private Set<Session> sessions;
@@ -35,30 +34,29 @@ public class Formateur implements Serializable {
     public Formateur(FormateurModel formateurModel) {
     }
 
-    public Formateur(String preom, Poste poste, Contrat contrat, String phone, String email, String password) {
+    public Formateur(String preom, Poste poste, Contrat contrat, String phone, String email) {
 
         this.prenom=nom;
         this.poste=poste;
         this.contrat=contrat;
         this.phone=phone;
         this.email=email;
-        this.password=password;
+
     }
 
-    public Formateur(String nom, Poste poste, Contrat contrat, String phone, String password) {
+    public Formateur(String nom, Poste poste, Contrat contrat, String phone) {
 
         this.nom=nom;
         this.poste=poste;
         this.contrat=contrat;
         this.phone=phone;
-        this.password=password;
+
     }
 
 
 
-    public Formateur(String nom, String prenom, Poste poste, Contrat contrat, String phone, String password) {
+    public Formateur(String nom, String prenom, Poste poste, Contrat contrat, String phone) {
     this.nom=nom;
-    this.password=password;
     this.phone=phone;
     this.contrat=contrat;
     }
@@ -76,7 +74,7 @@ public class Formateur implements Serializable {
                 '}';
     }
 
-    public Formateur(String nom, String prenom, Poste poste, Contrat contrat,String phone, String email, String password) {
+    public Formateur(String nom, String prenom, Poste poste, Contrat contrat,String phone, String email) {
         super();
         this.nom = nom;
         this.prenom = prenom;
@@ -84,7 +82,6 @@ public class Formateur implements Serializable {
         this.contrat = contrat;
         this.phone=phone;
         this.email = email;
-        this.password = password;
     }
 
 

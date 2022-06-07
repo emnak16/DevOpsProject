@@ -128,7 +128,7 @@ public class SessionTest {
         Session s = new Session(date1, date2, 3L, "First session, month long");
         sessionService.addSession(s);
 
-        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "97189195", "wbesbes@gmail.com", "Vermeg+123");
+        Formateur f = new Formateur("walid", "besbes", Poste.INGENIEUR, Contrat.CDI, "97189195", "wbesbes@gmail.com");
         formateurService.addorEditFormateur(f);
         Formateur f1 = formateurService.findFormateurByEmail(f.getEmail());
         s.setFormateur(f1);
